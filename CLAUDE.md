@@ -1,6 +1,13 @@
 # Invitación de Boda — Yusin & Henry
 
-Sitio web de invitación de boda. Single-page, HTML/CSS/JS vanilla en un solo archivo (`invitacion-yusin-henry-v6.html`), sin frameworks ni build step. Optimizado para móvil (la mayoría de invitados lo abrirá desde WhatsApp).
+Sitio web de invitación de boda. Single-page, HTML/CSS/JS vanilla, sin frameworks ni build step. Optimizado para móvil (la mayoría de invitados lo abrirá desde WhatsApp).
+
+## Estructura y deploy
+- **`index.html`** — archivo canónico del sitio (editar este). Incluye meta tags Open Graph con URLs absolutas al sitio publicado.
+- **`assets/`** — las 7 fotos (hero portrait/landscape, galería 1–4, banner), extraídas del base64 original.
+- **`invitacion-yusin-henry-v6.html`** — artefacto original de Cowork con fotos embebidas en base64; se conserva como respaldo histórico, NO editar.
+- **Publicado en GitHub Pages:** https://rodolfopenagos.github.io/yusinyhenry/ — repo `RodolfoPenagos/yusinyhenry` (público), rama `master`, raíz. Cada `git push` republica automáticamente (~30 s).
+- La vista previa de WhatsApp usa `og:image` → `assets/banner.jpg`; si se renombra o cambia esa foto, actualizar los meta tags.
 
 ## Datos del evento (NO modificar sin confirmación)
 - **Novios:** Yusin Penagos Ruiz & Henry Ayala García
@@ -53,15 +60,15 @@ Tokens: `--fs-caption:12 --fs-small:16 --fs-body:20 --fs-lead:24` + h2 `clamp(32
 - **Hero:** foto full-bleed cubriendo 100svh, con velo degradado café oscuro y tipografía clara (blanco/ivory/champagne) para contraste. `<picture>`: foto vertical en orientación portrait, horizontal en landscape. Pétalos cayendo (CSS, respeta `prefers-reduced-motion`).
 - **Galería:** carrusel horizontal con scroll-snap, flechas, dots, auto-avance 5.2s solo cuando es visible.
   - ⚠️ **NUNCA usar `scrollIntoView` en el carrusel** — desplaza la página verticalmente (bug ya corregido). Usar solo `track.scrollTo({left})`.
-- Fotos embebidas en base64 (el HTML es autocontenido). Tarea pendiente sugerida: extraerlas a `/assets` al montar el repo.
+- Fotos en `/assets` como archivos jpg con `loading="lazy"` en la galería (extraídas del base64 original al montar el repo).
 - Botón de música flotante listo pero sin fuente de audio (`<audio>` con src vacío); falta el MP3 de la pareja.
 
 ## Pendientes conocidos
 - [ ] Texto real de "Nuestra historia" (el actual es placeholder escrito por Claude)
 - [ ] MP3 de la canción de la pareja para el botón de música
 - [ ] Posible reintroducción del sobre animado (nivel de calidad premium, en Claude Design)
-- [ ] Deploy (GitHub Pages / Netlify / Vercel) y dominio o URL corta para compartir por WhatsApp
+- [x] Deploy — hecho en GitHub Pages: https://rodolfopenagos.github.io/yusinyhenry/ (pendiente opcional: dominio propio o URL corta)
 - [ ] Considerar icono de vestido (Phosphor, MIT) si el hanger de Tabler no convence para "Damas"
 
 ## Comandos
-Sin build. Abrir el HTML directo en navegador o `python3 -m http.server` para servirlo localmente.
+Sin build. Servir localmente con `python -m http.server 8123` (hay config de preview en `.claude/launch.json`). Publicar cambios: `git add` + `git commit` + `git push` (GitHub Pages reconstruye solo).
