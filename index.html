@@ -296,17 +296,11 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 .car-prev{left:4px}
 .car-next{right:4px}
 @media(min-width:760px){.car-prev{left:-10px}.car-next{right:-10px}}
-.car-dots{display:flex;justify-content:center;gap:var(--s1);margin-top:var(--s3)}
-.car-dot{
-  /* punto visual de 8px dentro de un area tactil de 32px */
-  width:32px;height:32px;border:none;background:transparent;
-  cursor:pointer;padding:0;position:relative;
+.car-counter{
+  margin-top:var(--s3);text-align:center;
+  font-family:'Roboto Serif',serif;font-weight:400;font-size:var(--fs-caption);
+  letter-spacing:.28em;color:var(--mocha-deep);
 }
-.car-dot::after{
-  content:'';position:absolute;inset:12px;border-radius:50%;
-  border:1px solid var(--champagne);background:transparent;transition:all .35s;
-}
-.car-dot.active::after{background:var(--mocha);border-color:var(--mocha);transform:scale(1.25)}
 
 /* ══════════ BANNER FOTO ══════════ */
 #banner{
@@ -639,10 +633,26 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
   </div>
   <div class="carousel reveal d1">
     <div class="car-track" id="car-track" tabindex="0" aria-label="Galería de fotos, usa las flechas para navegar">
-      <div class="car-slide"><img src="assets/galeria-1.jpg" alt="Yusin y Henry frente a frente" loading="lazy"></div>
-      <div class="car-slide"><img src="assets/galeria-2.jpg" alt="Yusin y Henry tomados de la mano" loading="lazy"></div>
-      <div class="car-slide"><img src="assets/galeria-3.jpg" alt="Yusin y Henry sonriendo" loading="lazy"></div>
-      <div class="car-slide"><img src="assets/galeria-4.jpg" alt="Yusin y Henry abrazados riendo" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g01.jpg" alt="Yusin y Henry, foto 1"></div>
+      <div class="car-slide"><img src="assets/galeria/g02.jpg" alt="Yusin y Henry, foto 2" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g03.jpg" alt="Yusin y Henry, foto 3" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g04.jpg" alt="Yusin y Henry, foto 4" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g05.jpg" alt="Yusin y Henry, foto 5" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g06.jpg" alt="Yusin y Henry, foto 6" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g07.jpg" alt="Yusin y Henry, foto 7" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g08.jpg" alt="Yusin y Henry, foto 8" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g09.jpg" alt="Yusin y Henry, foto 9" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g10.jpg" alt="Yusin y Henry, foto 10" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g11.jpg" alt="Yusin y Henry, foto 11" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g12.jpg" alt="Yusin y Henry, foto 12" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g13.jpg" alt="Yusin y Henry, foto 13" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g14.jpg" alt="Yusin y Henry, foto 14" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g15.jpg" alt="Yusin y Henry, foto 15" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g16.jpg" alt="Yusin y Henry, foto 16" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g17.jpg" alt="Yusin y Henry, foto 17" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g18.jpg" alt="Yusin y Henry, foto 18" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g19.jpg" alt="Yusin y Henry, foto 19" loading="lazy"></div>
+      <div class="car-slide"><img src="assets/galeria/g20.jpg" alt="Yusin y Henry, foto 20" loading="lazy"></div>
     </div>
     <button class="car-btn car-prev" id="car-prev" aria-label="Foto anterior">
       <svg viewBox="0 0 24 24"><path d="M15 6l-6 6l6 6" /></svg>
@@ -650,7 +660,7 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
     <button class="car-btn car-next" id="car-next" aria-label="Foto siguiente">
       <svg viewBox="0 0 24 24"><path d="M9 6l6 6l-6 6" /></svg>
     </button>
-    <div class="car-dots" id="car-dots" role="tablist"></div>
+    <div class="car-counter" id="car-counter" aria-live="polite"></div>
   </div>
 </section>
 
@@ -951,27 +961,20 @@ setTimeout(()=>{ document.querySelectorAll('.reveal:not(.in)').forEach(el=>el.cl
 (function(){
   const track = document.getElementById('car-track');
   const slides = track.children;
-  const dotsBox = document.getElementById('car-dots');
+  const counter = document.getElementById('car-counter');
   let idx = 0, autoTimer;
-
-  for(let i=0;i<slides.length;i++){
-    const d = document.createElement('button');
-    d.className = 'car-dot' + (i===0?' active':'');
-    d.setAttribute('aria-label','Ir a la foto '+(i+1));
-    d.addEventListener('click', ()=>{ goTo(i); restartAuto(); });
-    dotsBox.appendChild(d);
-  }
-  const dots = dotsBox.children;
+  const total = slides.length;
+  const pad = n => String(n).padStart(2,'0');
+  function updateCounter(){ counter.textContent = pad(idx+1) + '  /  ' + pad(total); }
+  updateCounter();
 
   function goTo(i){
-    idx = (i + slides.length) % slides.length;
+    idx = (i + total) % total;
     // scroll horizontal del carrusel únicamente — nunca mueve la página
     track.scrollTo({left: slides[idx].offsetLeft - track.offsetLeft, behavior:'smooth'});
+    updateCounter();
   }
-  function setActive(i){
-    idx = i;
-    for(let k=0;k<dots.length;k++) dots[k].classList.toggle('active', k===i);
-  }
+  function setActive(i){ idx = i; updateCounter(); }
   document.getElementById('car-prev').addEventListener('click', ()=>{ goTo(idx-1); restartAuto(); });
   document.getElementById('car-next').addEventListener('click', ()=>{ goTo(idx+1); restartAuto(); });
   track.addEventListener('keydown', e=>{
