@@ -1,1 +1,5 @@
 .claude/settings.local.json
+
+# Entrega de la sesion fotografica (fotos personales, no publicar en el repo)
+WEB-*/
+WEB-*.zip
