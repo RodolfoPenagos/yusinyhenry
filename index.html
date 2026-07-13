@@ -131,15 +131,12 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 .hero-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;animation:fadeUp 1.6s .3s ease both}
 .hero-names{
   font-family:'Pinyon Script',cursive;
-  font-size:clamp(76px,14.5vw,112px);
-  line-height:1.02;color:var(--white);
+  font-size:clamp(46px,12.5vw,96px);
+  line-height:1.08;color:var(--white);white-space:nowrap; /* "Yusin & Henry" en una sola linea */
   text-shadow:0 2px 22px rgba(30,22,16,.55); /* scrim suave uniforme, sin drop-shadow marcado */
 }
-.hero-amp{
-  font-family:'Roboto Serif',serif;font-style:italic;
-  font-size:clamp(30px,6vw,40px);color:var(--champagne);
-  display:block;margin:var(--s1) 0;line-height:1;
-  text-shadow:0 1px 14px rgba(30,22,16,.5);
+.hero-amp{ /* mismo Pinyon Script que los nombres, apenas mas pequeno */
+  font-size:.82em;
 }
 .hero-date{
   margin-top:var(--s5);display:flex;align-items:center;gap:clamp(10px,2.8vw,28px);
@@ -787,7 +784,7 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
           <a class="btn ghost" href="https://maps.app.goo.gl/QSYR24vPhWbkzLo7A" target="_blank" rel="noopener">Ver mapa</a>
         </div>
         <div class="gift-card reveal d2">
-          <div class="hotel-photo hotel-photo--ph" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21l18 0" /><path d="M9 8l1 0" /><path d="M9 12l1 0" /><path d="M9 16l1 0" /><path d="M14 8l1 0" /><path d="M14 12l1 0" /><path d="M14 16l1 0" /><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16" /></svg></div>
+          <img class="hotel-photo" src="assets/hoteles/city-express.jpg" alt="City Express Plus by Marriott Tampico" loading="lazy">
           <h3>City Express Plus</h3>
           <div class="bank-rows">
             <div class="bank-row">
@@ -796,7 +793,7 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
             </div>
             <div class="bank-row"><div><span class="lbl">Teléfono</span><span class="val">(833) 478 0340 opción 2 (Recepción)</span></div></div>
           </div>
-          <a class="btn ghost" href="https://maps.app.goo.gl/uYhAcrfYSqT3r2DD7" target="_blank" rel="noopener">Ver mapa</a>
+          <a class="btn ghost" href="https://maps.app.goo.gl/Casvgv2auvKDiBa58?g_st=ic" target="_blank" rel="noopener">Ver mapa</a>
         </div>
       </div>
     </div>
