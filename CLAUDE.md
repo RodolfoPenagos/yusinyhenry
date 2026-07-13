@@ -72,3 +72,8 @@ Tokens: `--fs-caption:12 --fs-small:16 --fs-body:20 --fs-lead:24` + h2 `clamp(32
 
 ## Comandos
 Sin build. Servir localmente con `python -m http.server 8123` (hay config de preview en `.claude/launch.json`). Publicar cambios: `git add` + `git commit` + `git push` (GitHub Pages reconstruye solo).
+
+## Skills instaladas (de anthropics/skills, MIT)
+- **`.claude/skills/frontend-design`** — criterio estético para trabajo de UI (usar al rediseñar secciones o crear el sobre animado).
+- **`.claude/skills/webapp-testing`** — verificación del sitio con Playwright (screenshots, logs); útil porque la captura del Browser pane a veces falla en Windows.
+- **`~/.claude/skills/canvas-design`** (nivel usuario, no está en el repo por sus 5 MB de fuentes) — arte estático en PNG/PDF; para material gráfico de la boda (save-the-date, menús, letreros).
