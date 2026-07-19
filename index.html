@@ -65,12 +65,15 @@ h2{
 }
 h2 em{font-style:normal;font-weight:400} /* titulos en un solo estilo (recto); sin mezcla recta+italica */
 
-/* ══════════ TEXTURA DE TELA (LINO) SUTIL ══════════
-   Capa por encima de las secciones (z alto, sin capturar clics): grano orgánico
-   + trama de hilos cruzados (urdimbre/trama) para dar sensación de tela. */
-body::before{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:5;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='.62 .48' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.14'/%3E%3C/svg%3E");
+/* ══════════ TEXTURA DE TELA (LINO) ══════════
+   Va DENTRO del fondo de cada sección (absoluta, no fija) para que se desplace
+   junto con el contenido y se sienta como la superficie misma, no como un velo
+   estático encima. z-index:-1 la pinta sobre el color de fondo pero debajo del
+   texto. Se excluyen las secciones de foto (hero y banner). */
+section:not(#hero):not(#banner)::after,
+footer::after{
+  content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='turbulence' baseFrequency='.62 .48' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.26'/%3E%3C/svg%3E");
   background-size:180px 180px;
 }
 section,footer{position:relative;z-index:1}
@@ -854,15 +857,15 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
         <svg class="gift-icon" viewBox="0 0 24 24"><path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" /><path d="M3 10l18 0" /><path d="M7 15l.01 0" /><path d="M11 15l2 0" /></svg>
         <h3>Transferencia</h3>
         <div class="bank-rows">
-          <div class="bank-row"><div><span class="lbl">Banco</span><span class="val">BBVA</span></div></div>
-          <div class="bank-row"><div><span class="lbl">Titular</span><span class="val">Yusin Penagos Ruiz</span></div></div>
+          <div class="bank-row"><div><span class="lbl">Entidad financiera</span><span class="val">Nu México</span></div></div>
+          <div class="bank-row"><div><span class="lbl">Beneficiario</span><span class="val">Henry Ayala García</span></div></div>
           <div class="bank-row">
-            <div><span class="lbl">Tarjeta</span><span class="val">4152 3145 3423 5414</span></div>
-            <button class="copy-btn" data-copy="4152314534235414">Copiar</button>
+            <div><span class="lbl">CLABE</span><span class="val">638 180 01018858014 8</span></div>
+            <button class="copy-btn" data-copy="638180010188580148">Copiar</button>
           </div>
           <div class="bank-row">
-            <div><span class="lbl">CLABE</span><span class="val">012 813 01516241015 1</span></div>
-            <button class="copy-btn" data-copy="012813015162410151">Copiar</button>
+            <div><span class="lbl">Tarjeta</span><span class="val">5101 2502 0300 5614</span></div>
+            <button class="copy-btn" data-copy="5101250203005614">Copiar</button>
           </div>
           <div class="bank-row"><div><span class="lbl">Referencia</span><span class="val">Regalo de Boda</span></div></div>
         </div>
