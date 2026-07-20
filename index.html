@@ -121,7 +121,7 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 #hero{
   min-height:100svh;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:var(--s8) var(--s3);
+  padding:var(--s8) var(--s3) var(--s1); /* casi sin aire abajo: el bloque baja hacia el borde */
   overflow:hidden;
 }
 .hero-bg{position:absolute;inset:0;z-index:0}
@@ -134,7 +134,13 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
     rgba(58,44,34,.28) 64%,
     rgba(58,44,34,.62) 100%);
 }
-.hero-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;animation:fadeUp 1.6s .3s ease both}
+/* nombres arriba y el resto abajo: el centro queda libre para las caras */
+.hero-inner{
+  position:relative;z-index:2;flex:1;width:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;
+  animation:fadeUp 1.6s .3s ease both;
+}
+.hero-foot{display:flex;flex-direction:column;align-items:center;width:100%}
 .hero-names{
   font-family:'Pinyon Script',cursive;
   font-size:clamp(46px,12.5vw,96px);
@@ -144,31 +150,41 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 .hero-amp{ /* mismo Pinyon Script que los nombres, apenas mas pequeno */
   font-size:.82em;
 }
+/* fecha apilada: día de la semana · 14 entre rayas · mes y año · ciudad */
 .hero-date{
-  margin-top:var(--s5);display:flex;align-items:center;gap:clamp(10px,2.8vw,28px);
-  font-family:'Roboto Serif',serif;font-weight:300;white-space:nowrap;
-  font-size:var(--fs-small);letter-spacing:.22em;color:var(--ivory);
+  display:flex;flex-direction:column;align-items:center;
+  font-family:'Roboto Serif',serif;font-weight:300;
+  font-size:var(--fs-caption);letter-spacing:.32em;color:var(--ivory);
   text-transform:uppercase;text-shadow:0 1px 10px rgba(40,30,22,.6);
 }
+.hero-day{display:flex;align-items:center;justify-content:center;gap:var(--s3);margin:var(--s2) 0 0}
+.hero-day::before,.hero-day::after{
+  content:'';width:clamp(32px,10vw,64px);height:1px;background:rgba(245,240,235,.7);
+}
 .hero-date .num{
-  font-family:'Roboto Serif',serif;font-weight:500;
-  font-size:clamp(40px,7.5vw,48px);letter-spacing:.04em;color:var(--white);
+  font-family:'Roboto Serif',serif;font-weight:500;line-height:1;
+  font-size:clamp(48px,11vw,64px);letter-spacing:.04em;color:var(--white);
   text-shadow:0 2px 10px rgba(40,30,22,.5);
 }
-.hero-date .sep{width:1px;height:46px;background:linear-gradient(180deg,transparent,var(--champagne),transparent)}
-.hero-city{
-  margin-top:var(--s2);
-  font-family:'Roboto Serif',serif;font-weight:300;font-size:var(--fs-caption);
-  letter-spacing:.32em;text-transform:uppercase;color:var(--ivory);
-  text-shadow:0 1px 10px rgba(40,30,22,.6);
+.hero-date .vsep{
+  width:1px;height:24px;margin:var(--s1) 0;
+  background:linear-gradient(180deg,transparent,rgba(245,240,235,.7),transparent);
+}
+/* ramita centrada sobre el borde superior del botón */
+.hero-cta{position:relative;display:flex;flex-direction:column;align-items:center;margin-top:var(--s4)}
+.hero-cta-orn{
+  position:absolute;top:0;left:50%;transform:translate(-50%,-52%);
+  width:92px;height:22px;pointer-events:none;z-index:1;
+  stroke:var(--champagne);fill:none;stroke-width:1.1;
+  stroke-linecap:round;stroke-linejoin:round;
+  filter:drop-shadow(0 1px 6px rgba(30,22,16,.5));
 }
 .hero-rsvp{
-  margin-top:var(--s5);
   display:inline-flex;align-items:center;gap:var(--s1);
   font-family:'Roboto Serif',serif;font-weight:400;font-size:var(--fs-caption);
-  letter-spacing:.26em;text-transform:uppercase;text-decoration:none;
+  letter-spacing:.18em;text-transform:uppercase;text-decoration:none;
   color:var(--white);
-  padding:var(--s2) var(--s4);
+  padding:var(--s2);
   border:1px solid var(--champagne);border-radius:2px;
   background:rgba(58,44,34,.30);
   -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px);
@@ -177,17 +193,17 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 }
 .hero-rsvp:hover{background:var(--mocha);border-color:var(--mocha);transform:translateY(-2px)}
 .scroll-cue{
-  margin-top:var(--s8);font-family:'Roboto Serif',serif;font-size:var(--fs-caption);
+  margin-top:var(--s4);font-family:'Roboto Serif',serif;font-size:var(--fs-caption);
   letter-spacing:.45em;text-transform:uppercase;color:var(--ivory);
   text-shadow:0 1px 8px rgba(40,30,22,.6);
   display:flex;flex-direction:column;align-items:center;gap:var(--s1);
 }
-.scroll-cue::after{
-  content:'';width:1px;height:48px;
-  background:linear-gradient(180deg,var(--champagne),transparent);
-  animation:drop 2.2s ease-in-out infinite;
+.scroll-cue svg{
+  width:20px;height:20px;stroke:var(--ivory);fill:none;stroke-width:1.2;
+  stroke-linecap:round;stroke-linejoin:round;
+  animation:nudge 2.4s ease-in-out infinite;
 }
-@keyframes drop{0%{transform:scaleY(.2);transform-origin:top}55%{transform:scaleY(1)}100%{opacity:0}}
+@keyframes nudge{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(6px);opacity:1}}
 
 /* ══════════ QUOTE ══════════ */
 #quote{background:var(--white)}
@@ -505,7 +521,7 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
 .reveal.d2{transition-delay:.24s}
 @media(prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}
-  .scroll-cue::after,#music-btn.playing svg{animation:none!important}
+  .scroll-cue svg,#music-btn.playing svg{animation:none!important}
   html{scroll-behavior:auto}
 }
 </style>
@@ -566,18 +582,24 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
   <div class="hero-veil"></div>
   <div class="hero-inner">
     <h1 class="hero-names">Yusin <span class="hero-amp">&amp;</span> Henry</h1>
-    <div class="hero-date">
-      <span>Sábado</span>
-      <span class="sep"></span>
-      <span class="num">14</span>
-      <span class="sep"></span>
-      <span>Nov · 2026</span>
+    <div class="hero-foot">
+      <div class="hero-date">
+        <span>Sábado</span>
+        <div class="hero-day"><span class="num">14</span></div>
+        <span>Noviembre 2026</span>
+        <span class="vsep"></span>
+        <span>Tampico, Tamaulipas</span>
+      </div>
+      <div class="hero-cta">
+        <svg class="hero-cta-orn" viewBox="0 0 104 24" aria-hidden="true"><use href="#branch"/><use href="#branch" transform="translate(104,0) scale(-1,1)"/></svg>
+        <a class="hero-rsvp" href="https://wa.me/528331488043?text=Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Yusin%20y%20Henry%20%F0%9F%A4%8D%20Somos%3A%20" target="_blank" rel="noopener">
+          Confirma tu asistencia
+        </a>
+      </div>
+      <div class="scroll-cue">Desliza
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5l0 14" /><path d="M16 15l-4 4" /><path d="M8 15l4 4" /></svg>
+      </div>
     </div>
-    <div class="hero-city">Tampico, Tamaulipas</div>
-    <a class="hero-rsvp" href="https://wa.me/528331488043?text=Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Yusin%20y%20Henry%20%F0%9F%A4%8D%20Somos%3A%20" target="_blank" rel="noopener">
-      Confirma tu asistencia
-    </a>
-    <div class="scroll-cue">Desliza</div>
   </div>
 </section>
 
