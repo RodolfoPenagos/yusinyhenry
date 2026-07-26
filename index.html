@@ -362,7 +362,8 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
   letter-spacing:.4em;text-transform:uppercase;color:var(--mocha-deep);margin-bottom:var(--s3);
 }
 .family-card p{font-size:var(--fs-lead);color:var(--mocha);line-height:1.6} /* 32px */
-.family-card .cross{color:var(--champagne);font-size:.8em;vertical-align:super}
+.family-card .cross{display:inline-block;width:.48em;height:.72em;margin-left:.22em;vertical-align:.06em}
+.family-card .cross svg{width:100%;height:100%;display:block;stroke:var(--champagne);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .blessing{
   margin-top:var(--s6);font-style:italic;font-size:var(--fs-lead);font-weight:300;color:var(--mocha);
   max-width:540px;margin-left:auto;margin-right:auto;line-height:1.6;
@@ -623,7 +624,7 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
       <div class="family-card">
         <svg class="fc-orn" viewBox="0 0 52 24"><use href="#branch"/></svg>
         <h3>Padres de la novia</h3>
-        <p>José Rodolfo Penagos García<span class="cross"> ✝</span><br>Yusin Ruiz Vargas</p>
+        <p>José Rodolfo Penagos García<span class="cross" aria-hidden="true"><svg viewBox="0 0 12 18"><path d="M6 1L6 17M2 6L10 6" /></svg></span><br>Yusin Ruiz Vargas</p>
       </div>
       <div class="family-card">
         <svg class="fc-orn" viewBox="0 0 52 24"><use href="#branch"/></svg>
