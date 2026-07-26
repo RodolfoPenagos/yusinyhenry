@@ -170,15 +170,7 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
   width:1px;height:24px;margin:var(--s1) 0;
   background:linear-gradient(180deg,transparent,rgba(245,240,235,.7),transparent);
 }
-/* ramita centrada sobre el borde superior del botón */
-.hero-cta{position:relative;display:flex;flex-direction:column;align-items:center;margin-top:var(--s4)}
-.hero-cta-orn{
-  position:absolute;top:0;left:50%;transform:translate(-50%,-52%);
-  width:92px;height:22px;pointer-events:none;z-index:1;
-  stroke:var(--champagne);fill:none;stroke-width:1.1;
-  stroke-linecap:round;stroke-linejoin:round;
-  filter:drop-shadow(0 1px 6px rgba(30,22,16,.5));
-}
+.hero-cta{display:flex;flex-direction:column;align-items:center;margin-top:var(--s4)}
 .hero-rsvp{
   display:inline-flex;align-items:center;gap:var(--s1);
   font-family:'Roboto Serif',serif;font-weight:400;font-size:var(--fs-caption);
@@ -355,7 +347,7 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
   border:1px solid rgba(214,196,163,.35);pointer-events:none;
 }
 .family-card .fc-orn{
-  width:52px;height:24px;stroke:var(--champagne);fill:none;stroke-width:1.1;margin-bottom:var(--s2);
+  width:44px;height:26px;stroke:var(--champagne);fill:none;stroke-width:1.1;margin-bottom:var(--s2);
 }
 .family-card h3{
   font-family:'Roboto Serif',serif;font-weight:400;font-size:var(--fs-caption);
@@ -415,6 +407,11 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
   letter-spacing:.38em;text-transform:uppercase;color:var(--mocha-deep);margin-bottom:var(--s1);
 }
 .dress-item p{font-style:italic;color:var(--ink);font-size:var(--fs-body)} /* dato informativo: AA */
+/* paleta sugerida para invitados (colores de contenido, no de la marca) */
+.dress-palette{margin-top:var(--s8)}
+.dress-palette-intro{max-width:480px;margin:0 auto var(--s5);font-style:italic;font-weight:300;font-size:var(--fs-body);color:var(--mocha)}
+.swatches{display:flex;justify-content:center;gap:clamp(12px,4vw,22px);flex-wrap:wrap}
+.swatch{display:block;width:clamp(46px,13vw,62px);height:clamp(46px,13vw,62px);border-radius:50%;border:1px solid rgba(122,92,71,.16);box-shadow:0 5px 14px rgba(122,92,71,.14)}
 .adults-note{
   margin-top:var(--s8);padding:var(--s5) var(--s4);
   background:var(--white);border:1px solid rgba(214,196,163,.6);border-radius:2px;
@@ -506,7 +503,6 @@ footer{
     var(--mocha-deep);
   color:var(--ivory);overflow:hidden;position:relative;
 }
-footer .fo-orn{width:64px;height:30px;stroke:var(--champagne);fill:none;stroke-width:1.1;margin-bottom:var(--s3);opacity:.8}
 footer .script{font-size:clamp(48px,9vw,64px);color:var(--ivory)}
 footer .date{
   font-family:'Roboto Serif',serif;font-size:var(--fs-caption);letter-spacing:.45em;
@@ -592,7 +588,6 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
         <span>Tampico, Tamaulipas</span>
       </div>
       <div class="hero-cta">
-        <svg class="hero-cta-orn" viewBox="0 0 104 24" aria-hidden="true"><use href="#branch"/><use href="#branch" transform="translate(104,0) scale(-1,1)"/></svg>
         <a class="hero-rsvp" href="https://wa.me/528331488043?text=Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Yusin%20y%20Henry%20%F0%9F%A4%8D%20Somos%3A%20" target="_blank" rel="noopener">
           Confirma tu asistencia
         </a>
@@ -622,12 +617,12 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
     <h2>El amor de <em>nuestros padres</em></h2>
     <div class="family-grid">
       <div class="family-card">
-        <svg class="fc-orn" viewBox="0 0 52 24"><use href="#branch"/></svg>
+        <svg class="fc-orn" viewBox="0 0 34 22"><use href="#dblheart" transform="translate(2,0)"/></svg>
         <h3>Padres de la novia</h3>
         <p>José Rodolfo Penagos García<span class="cross" aria-hidden="true"><svg viewBox="0 0 12 18"><path d="M6 1L6 17M2 6L10 6" /></svg></span><br>Yusin Ruiz Vargas</p>
       </div>
       <div class="family-card">
-        <svg class="fc-orn" viewBox="0 0 52 24"><use href="#branch"/></svg>
+        <svg class="fc-orn" viewBox="0 0 34 22"><use href="#dblheart" transform="translate(2,0)"/></svg>
         <h3>Padres del novio</h3>
         <p>Enrique Ayala Piñeyro<br>Laura Lilia García Ponce</p>
       </div>
@@ -766,6 +761,16 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
         <svg viewBox="0 0 24 24"><path d="M14 6a2 2 0 1 0 -4 0c0 1.667 .67 3 2 4h-.008l7.971 4.428a2 2 0 0 1 1.029 1.749v.823a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-.823a2 2 0 0 1 1.029 -1.749l7.971 -4.428" /></svg>
         <h3>Damas</h3>
         <p>Vestido largo<br>de noche</p>
+      </div>
+    </div>
+    <div class="dress-palette reveal">
+      <p class="dress-palette-intro">Nos encantaría que nos acompañaran en la paleta de colores de nuestra boda.</p>
+      <div class="swatches" role="img" aria-label="Paleta de colores sugerida: arena, café, gris, olivo y beige">
+        <span class="swatch" style="background:#B8A17F"></span>
+        <span class="swatch" style="background:#6C5837"></span>
+        <span class="swatch" style="background:#A5A4A2"></span>
+        <span class="swatch" style="background:#7D6F48"></span>
+        <span class="swatch" style="background:#C4BCA5"></span>
       </div>
     </div>
     <div class="adults-note reveal d1">
@@ -918,7 +923,6 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
 
 <!-- ═══════════ FOOTER ═══════════ -->
 <footer>
-  <svg class="fo-orn" viewBox="0 0 52 24"><use href="#branch"/></svg>
   <div class="script">Yusin &amp; Henry</div>
   <div class="date">14 · Noviembre · 2026</div>
   <p class="thanks">¡Gracias por ser parte de nuestra historia!</p>
