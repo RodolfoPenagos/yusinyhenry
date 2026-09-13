@@ -396,22 +396,28 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 
 /* ══════════ DRESS CODE ══════════ */
 #dresscode{background:var(--ivory)}
-.dress-grid{
-  display:flex;justify-content:center;gap:clamp(40px,9vw,96px);
-  margin-top:var(--s6);flex-wrap:wrap;
+/* dos bloques: caballeros y damas, cada uno con su vestimenta y su paleta */
+.dress-intro{max-width:520px;margin:var(--s4) auto var(--s6);font-style:italic;font-weight:300;font-size:var(--fs-body);color:var(--mocha)}
+.dress-block{
+  margin-top:var(--s4);padding:var(--s6) var(--s3) var(--s5);
+  background:var(--white);border:1px solid rgba(214,196,163,.6);border-radius:2px;
+  position:relative;box-shadow:0 12px 30px rgba(122,92,71,.08);
 }
-.dress-item{max-width:220px}
-.dress-item svg{width:72px;height:72px;stroke:var(--mocha);fill:none;stroke-width:.6;stroke-linecap:round;stroke-linejoin:round;margin-bottom:var(--s2)}
-.dress-item h3{
+.dress-block::before{content:'';position:absolute;inset:7px;border:1px solid rgba(214,196,163,.35);pointer-events:none}
+.dress-block:first-of-type{margin-top:var(--s6)}
+.dress-photo{
+  display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
+  border-radius:2px;margin-bottom:var(--s3);
+  box-shadow:0 6px 18px rgba(122,92,71,.14);
+}
+.dress-pin{margin-top:var(--s4)}
+.dress-block h3{
   font-family:'Roboto Serif',serif;font-weight:400;font-size:var(--fs-caption);
   letter-spacing:.38em;text-transform:uppercase;color:var(--mocha-deep);margin-bottom:var(--s1);
 }
-.dress-item p{font-style:italic;color:var(--ink);font-size:var(--fs-body)} /* dato informativo: AA */
-/* paleta sugerida para invitados (colores de contenido, no de la marca) */
-.dress-palette{margin-top:var(--s8)}
-.dress-palette-intro{max-width:480px;margin:0 auto var(--s5);font-style:italic;font-weight:300;font-size:var(--fs-body);color:var(--mocha)}
-.swatches{display:flex;justify-content:center;gap:clamp(12px,4vw,22px);flex-wrap:wrap}
-.swatch{display:block;width:clamp(46px,13vw,62px);height:clamp(46px,13vw,62px);border-radius:50%;border:1px solid rgba(122,92,71,.16);box-shadow:0 5px 14px rgba(122,92,71,.14)}
+.dress-what{font-style:italic;color:var(--ink);font-size:var(--fs-body);margin-bottom:var(--s4)} /* dato informativo: AA */
+.swatches{display:flex;justify-content:center;gap:clamp(8px,2.6vw,18px);flex-wrap:wrap}
+.swatch{display:block;width:clamp(32px,10.5vw,56px);height:clamp(32px,10.5vw,56px);border-radius:50%;border:1px solid rgba(122,92,71,.16);box-shadow:0 5px 14px rgba(122,92,71,.14)}
 .adults-note{
   margin-top:var(--s8);padding:var(--s5) var(--s4);
   background:var(--white);border:1px solid rgba(214,196,163,.6);border-radius:2px;
@@ -425,8 +431,10 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 /* ══════════ REGALOS ══════════ */
 #gifts{background:var(--ivory)}
 #gifts .intro{max-width:540px;margin:var(--s2) auto 0;font-style:italic;font-weight:300;font-size:var(--fs-lead);color:var(--mocha)}
-.gift-grid{display:grid;grid-template-columns:1fr;gap:var(--s3);margin-top:var(--s6);align-items:stretch}
-@media(min-width:760px){.gift-grid{grid-template-columns:1fr 1fr 1fr}}
+/* minmax(0,1fr) y no 1fr: con 1fr el contenido mas ancho de una card empuja la
+   columna y la retícula se sale del contenedor (causaba scroll horizontal en tablet) */
+.gift-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s3);margin-top:var(--s6);align-items:stretch}
+@media(min-width:760px){.gift-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .gift-card{
   border:1px solid rgba(214,196,163,.6);border-radius:2px;
   padding:var(--s5) var(--s3) var(--s4);background:var(--white);
@@ -439,13 +447,16 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
   font-family:'Roboto Serif',serif;font-weight:500;font-size:var(--fs-caption);
   letter-spacing:.32em;text-transform:uppercase;color:var(--mocha-deep);margin-bottom:var(--s2);
 }
-.gift-card .detail{font-size:var(--fs-body);color:var(--ink);margin-bottom:var(--s1)}
+/* los @ de Instagram son una sola palabra larga: sin esto se salen de la card */
+.gift-card .detail{font-size:var(--fs-body);color:var(--ink);margin-bottom:var(--s1);overflow-wrap:anywhere}
 .gift-card .btn{margin-top:auto;padding:var(--s2) var(--s3);font-size:var(--fs-caption);margin-top:var(--s3)}
 .bank-rows{width:100%;margin-top:6px;position:relative;z-index:1}
-.bank-row{
-  display:flex;align-items:center;justify-content:space-between;gap:var(--s1);
-  padding:var(--s1) 0;border-bottom:1px dashed rgba(214,196,163,.65);text-align:left;
-}
+.bank-row{padding:var(--s1) 0;border-bottom:1px dashed rgba(214,196,163,.65);text-align:left}
+/* mismo tratamiento que en las cards de hotel: el icono de copiar va pegado al
+   dato, sin contorno. El padding derecho aloja su area tactil de 44px, que
+   sobresale 12px del icono de 20px. */
+.val-row{display:flex;align-items:center;gap:var(--s1);flex-wrap:wrap;padding-right:var(--s2)}
+.bank-row .val{white-space:nowrap}
 .bank-row:last-child{border-bottom:none}
 .bank-row .lbl{font-family:'Roboto Serif',serif;font-size:var(--fs-caption);letter-spacing:.18em;text-transform:uppercase;color:var(--mocha-deep);display:block}
 .bank-row .val{font-size:var(--fs-small);color:var(--ink);font-family:'Roboto Serif',serif;font-weight:300}
@@ -458,20 +469,103 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 }
 .copy-btn:hover{background:var(--champagne);color:var(--white)}
 .copy-btn.done{background:var(--mocha);border-color:var(--mocha);color:var(--white)}
+/* foco de teclado visible: no existia en el sitio y ahora hay un boton que es
+   solo icono, donde perder el foco de vista deja al usuario sin referencia */
+:focus-visible{outline:2px solid var(--mocha-deep);outline-offset:3px;border-radius:2px}
 
 /* ══════════ GUÍA DEL INVITADO ══════════ */
-#guest-guide{background:var(--white)}
+/* misma relacion que en vestimenta y regalos: seccion ivory + cards blancas.
+   Antes estaba invertida (seccion blanca + cards ivory) y rompia la consistencia. */
+#guest-guide{background:var(--ivory)}
+/* 700px es la medida de lectura para texto; una fila de 3 cards necesita mas aire.
+   El texto de la seccion sigue acotado por sus propios max-width (520-540px). */
+#guest-guide .wrap,#gifts .wrap{max-width:1040px}
+#guest-guide h2,#gifts h2{max-width:700px;margin-left:auto;margin-right:auto}
 #guest-guide .intro{max-width:540px;margin:var(--s2) auto 0;font-style:italic;font-weight:300;font-size:var(--fs-lead);color:var(--mocha)}
 .guide-block{margin-top:var(--s8)}
 .guide-icon{width:52px;height:52px;margin:0 auto var(--s2);stroke:var(--mocha);fill:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
 .guide-cat{font-family:'Roboto Serif',serif;font-weight:500;font-size:var(--fs-lead);letter-spacing:.04em;color:var(--mocha)}
 .guide-note{max-width:520px;margin:var(--s1) auto 0;font-style:italic;font-weight:300;font-size:var(--fs-body);color:var(--ink)}
 .guide-block .gift-grid{margin-top:var(--s5)}
-#guest-guide .gift-card{background:var(--ivory)}
+/* las cards de hotel llevan mas datos que las de belleza: en tablet van de 2 en 2
+   para que el codigo de reservacion quepa completo en una linea */
+@media(min-width:760px) and (max-width:1119px){
+  .hotel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  /* la card de transferencia lleva tantos datos como las de hotel: en 3 columnas
+     el icono de copiar se baja de renglon y se despega del dato */
+  #gifts .gift-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
 /* foto del hotel (marco horizontal arriba de la tarjeta) */
 .hotel-photo{width:100%;aspect-ratio:16/10;border-radius:2px;margin-bottom:var(--s3);display:block;object-fit:cover;box-shadow:0 6px 18px rgba(122,92,71,.12)}
 .hotel-photo--ph{display:flex;align-items:center;justify-content:center;background:var(--white);border:1px solid rgba(214,196,163,.6)}
 .hotel-photo--ph svg{width:40px;height:40px;stroke:var(--champagne);fill:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
+
+/* ══════ CARD DE HOTEL ══════
+   El código de descuento es el dato que el invitado necesita: se lee, se dice por
+   teléfono. Sin caja alrededor: la etiqueta y el dato se sostienen solos. */
+.hotel-card h3{
+  font-size:var(--fs-lead);letter-spacing:.02em;text-transform:none;
+  font-weight:400;color:var(--mocha);line-height:1.2;margin-bottom:var(--s3);
+  /* reserva 2 lineas para que los nombres largos no desalineen el resto de la card */
+  min-height:48px;display:flex;align-items:center;
+}
+.code-label{
+  display:block;font-family:'Roboto Serif',serif;font-size:var(--fs-caption);
+  letter-spacing:.2em;text-transform:uppercase;color:var(--mocha-deep);
+}
+/* el padding lateral aloja el area tactil de 44px del icono, que sobresale 12px
+   por lado del icono de 20px; sin el, el overlay desborda la linea */
+.code-line{display:flex;align-items:center;justify-content:center;gap:var(--s1);margin-top:4px;padding:0 var(--s2)}
+.code-value{
+  white-space:nowrap;
+  font-family:'Roboto Serif',serif;font-weight:500;font-size:var(--fs-lead);
+  letter-spacing:.02em;color:var(--mocha-deep);line-height:1.2;
+}
+/* JERARQUIA 3 (la mas baja): el codigo se dice en voz alta por telefono, asi que
+   copiar casi no se usa. Queda como icono pelon junto al dato, sin contorno. */
+.copy-plain{
+  border:none;background:none;padding:0;min-height:0;
+  width:20px;height:20px;flex-shrink:0;position:relative;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--mocha); /* 4.10:1 sobre blanco: supera el 3:1 que pide WCAG para iconos */
+  cursor:pointer;transition:color .3s;
+}
+/* area tactil de 44px sin que el icono ocupe 44px en el layout */
+.copy-plain::after{content:'';position:absolute;top:50%;left:50%;width:44px;height:44px;transform:translate(-50%,-50%)}
+.copy-plain:hover,.copy-plain.done{color:var(--mocha-deep);background:none;border:none}
+.copy-btn .ico{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.copy-plain .ico{width:20px;height:20px}
+.copy-btn .ico-check{display:none}
+.copy-btn.done .ico-copy{display:none}
+.copy-btn.done .ico-check{display:block}
+/* en pantallas muy angostas el codigo baja un escalon de la escala tipografica
+   antes que partirse en dos lineas */
+@media(max-width:400px){
+  .code-value{font-size:var(--fs-body)}
+}
+/* en el tramo mas justo de 3 columnas la card cede padding lateral para que
+   los datos largos (CLABE) no se desborden */
+@media(min-width:760px) and (max-width:1119px){
+  .gift-card{padding-left:var(--s2);padding-right:var(--s2)}
+}
+/* Bloque de acciones al fondo de la card: al ir todo junto con margin-top:auto,
+   los botones de las 3 cards quedan alineados aunque el nombre o la nota midan
+   distinto. */
+.hotel-actions{margin-top:auto;width:100%;padding-top:var(--s4)}
+/* los dos botones comparten renglon y miden igual */
+.hotel-btns{display:flex;gap:var(--s2)}
+.hotel-actions .btn{margin-top:0;flex:1 1 0;min-width:0;justify-content:center;
+  padding:var(--s2) var(--s1);letter-spacing:.15em;white-space:nowrap}
+/* JERARQUIA 1: llamar. Solido.
+   Usa --mocha-deep y no --mocha: #96745D sobre blanco da 4.10:1 y reprueba
+   WCAG AA; #7A5C47 da 5.90:1. */
+.hotel-call{background:var(--mocha-deep);border-color:var(--mocha-deep)}
+.hotel-call:hover{background:var(--mocha-deep);border-color:var(--mocha-deep)}
+/* instruccion para cuando contesten (extension / opcion del conmutador):
+   se necesita durante la llamada, por eso sobrevive a quitar el telefono.
+   Va ARRIBA de los botones: si va abajo, las cards con nota dejan los botones
+   34px mas arriba que las demas y se pierde la alineacion. */
+.hotel-note{display:block;margin-bottom:var(--s2);font-size:var(--fs-caption);letter-spacing:.06em;color:var(--mocha-deep)}
 /* foto de perfil de la maquillista (avatar circular) */
 .artist-avatar{width:92px;height:92px;border-radius:50%;object-fit:cover;margin:0 auto var(--s2);display:block;border:1px solid var(--champagne);box-shadow:0 6px 18px rgba(122,92,71,.14)}
 .artist-avatar--ph{display:flex;align-items:center;justify-content:center;background:var(--white)}
@@ -751,27 +845,32 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
   <div class="wrap reveal">
     <div class="eyebrow">Código de vestimenta</div>
     <h2>Formal <em>de noche</em></h2>
-    <div class="dress-grid">
-      <div class="dress-item">
-        <svg viewBox="0 0 24 24"><path d="M12 22l4 -4l-2.5 -11l.993 -2.649a1 1 0 0 0 -.936 -1.351h-3.114a1 1 0 0 0 -.936 1.351l.993 2.649l-2.5 11l4 4z" /><path d="M10.5 7h3l5 5.5" /></svg>
-        <h3>Caballeros</h3>
-        <p>Traje formal</p>
+    <p class="dress-intro">Nos encantaría que nos acompañaran en la paleta de colores de nuestra boda.</p>
+    <div class="dress-block reveal">
+      <img class="dress-photo" src="assets/dress-caballeros.jpg" alt="Caballeros en traje formal oscuro" loading="lazy">
+      <h3>Caballeros</h3>
+      <p class="dress-what">Traje formal</p>
+      <div class="swatches" role="img" aria-label="Paleta para caballeros: negro, gris Oxford, azul marino, café y arena">
+        <span class="swatch" style="background:#20201E"></span>
+        <span class="swatch" style="background:#5C5C5E"></span>
+        <span class="swatch" style="background:#2C3A54"></span>
+        <span class="swatch" style="background:#5F4636"></span>
+        <span class="swatch" style="background:#C6B79A"></span>
       </div>
-      <div class="dress-item">
-        <svg viewBox="0 0 24 24"><path d="M14 6a2 2 0 1 0 -4 0c0 1.667 .67 3 2 4h-.008l7.971 4.428a2 2 0 0 1 1.029 1.749v.823a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-.823a2 2 0 0 1 1.029 -1.749l7.971 -4.428" /></svg>
-        <h3>Damas</h3>
-        <p>Vestido largo<br>de noche</p>
-      </div>
+      <a class="btn ghost dress-pin" href="https://mx.pinterest.com/" target="_blank" rel="noopener">Inspiración</a>
     </div>
-    <div class="dress-palette reveal">
-      <p class="dress-palette-intro">Nos encantaría que nos acompañaran en la paleta de colores de nuestra boda.</p>
-      <div class="swatches" role="img" aria-label="Paleta de colores sugerida: arena, café, gris, olivo y beige">
-        <span class="swatch" style="background:#B8A17F"></span>
-        <span class="swatch" style="background:#6C5837"></span>
-        <span class="swatch" style="background:#A5A4A2"></span>
-        <span class="swatch" style="background:#7D6F48"></span>
-        <span class="swatch" style="background:#C4BCA5"></span>
+    <div class="dress-block reveal">
+      <img class="dress-photo" src="assets/dress-damas.jpg" alt="Damas en vestido largo en tonos verde olivo y café" loading="lazy">
+      <h3>Damas</h3>
+      <p class="dress-what">Vestido largo de noche</p>
+      <div class="swatches" role="img" aria-label="Paleta para damas: negro, café, marrón, verde oliva y azul">
+        <span class="swatch" style="background:#20201E"></span>
+        <span class="swatch" style="background:#5F4636"></span>
+        <span class="swatch" style="background:#7E4E37"></span>
+        <span class="swatch" style="background:#5E5C34"></span>
+        <span class="swatch" style="background:#2E3C58"></span>
       </div>
+      <a class="btn ghost dress-pin" href="https://mx.pinterest.com/" target="_blank" rel="noopener">Inspiración</a>
     </div>
     <div class="adults-note reveal d1">
       <svg viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /><path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" /><path d="M19 11h2m-1 -1v2" /></svg>
@@ -791,43 +890,72 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
     <div class="guide-block">
       <svg class="guide-icon" viewBox="0 0 24 24"><path d="M3 7v11m0 -4h18m0 4v-8a2 2 0 0 0 -2 -2h-8v6" /><path d="M7 10m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
       <h3 class="guide-cat">Hospedaje</h3>
-      <p class="guide-note">Cada hotel tiene un código de reservación con tarifa especial para la boda.</p>
-      <div class="gift-grid">
-        <div class="gift-card reveal">
+      <p class="guide-note">Menciona el código de descuento al llamar para obtener la tarifa especial de la boda.</p>
+      <div class="gift-grid hotel-grid">
+        <div class="gift-card hotel-card reveal">
           <img class="hotel-photo" src="assets/hoteles/hotsson.jpg" alt="HS HOTSSON Tampico" loading="lazy">
-          <h3>HS HOTSSON</h3>
-          <div class="bank-rows">
-            <div class="bank-row">
-              <div><span class="lbl">Código de reservación</span><span class="val">BODYYH</span></div>
-              <button class="copy-btn" data-copy="BODYYH">Copiar</button>
+          <h3>HS Hotsson</h3>
+          <p class="code-label">Código de descuento</p>
+          <p class="code-line">
+            <span class="code-value">BODYYH</span>
+            <button class="copy-btn copy-plain" data-copy="BODYYH" aria-label="Copiar el código BODYYH">
+              <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+              <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
+            </button>
+          </p>
+          <div class="hotel-actions">
+            <div class="hotel-btns">
+              <a class="btn hotel-call" href="tel:+524777198010">
+                <svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
+                Llamar
+              </a>
+              <a class="btn ghost" href="https://maps.app.goo.gl/mMGJWUhMeMAdo2kv8" target="_blank" rel="noopener">Ver mapa</a>
             </div>
-            <div class="bank-row"><div><span class="lbl">Teléfono</span><span class="val">(477) 719 8010</span></div></div>
           </div>
-          <a class="btn ghost" href="https://maps.app.goo.gl/mMGJWUhMeMAdo2kv8" target="_blank" rel="noopener">Ver mapa</a>
         </div>
-        <div class="gift-card reveal d1">
+        <div class="gift-card hotel-card reveal d1">
           <img class="hotel-photo" src="assets/hoteles/hampton.jpg" alt="Hampton Inn by Hilton Tampico Zona Dorada" loading="lazy">
           <h3>Hampton Inn Zona Dorada</h3>
-          <div class="bank-rows">
-            <div class="bank-row">
-              <div><span class="lbl">Código de reservación</span><span class="val">YUSIN Y HENRY</span></div>
-              <button class="copy-btn" data-copy="YUSIN Y HENRY">Copiar</button>
+          <p class="code-label">Código de descuento</p>
+          <p class="code-line">
+            <span class="code-value">YUSIN Y HENRY</span>
+            <button class="copy-btn copy-plain" data-copy="YUSIN Y HENRY" aria-label="Copiar el código YUSIN Y HENRY">
+              <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+              <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
+            </button>
+          </p>
+          <div class="hotel-actions">
+            <span class="hotel-note">Pide la extensión de Reservas</span>
+            <div class="hotel-btns">
+              <a class="btn hotel-call" href="tel:+528332413500">
+                <svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
+                Llamar
+              </a>
+              <a class="btn ghost" href="https://maps.app.goo.gl/QSYR24vPhWbkzLo7A" target="_blank" rel="noopener">Ver mapa</a>
             </div>
-            <div class="bank-row"><div><span class="lbl">Teléfono</span><span class="val">(833) 241 3500 ext. Reservas</span></div></div>
           </div>
-          <a class="btn ghost" href="https://maps.app.goo.gl/QSYR24vPhWbkzLo7A" target="_blank" rel="noopener">Ver mapa</a>
         </div>
-        <div class="gift-card reveal d2">
+        <div class="gift-card hotel-card reveal d2">
           <img class="hotel-photo" src="assets/hoteles/city-express.jpg" alt="City Express Plus by Marriott Tampico" loading="lazy">
           <h3>City Express Plus</h3>
-          <div class="bank-rows">
-            <div class="bank-row">
-              <div><span class="lbl">Código de reservación</span><span class="val">BODA YUSIN Y HENRY</span></div>
-              <button class="copy-btn" data-copy="BODA YUSIN Y HENRY">Copiar</button>
+          <p class="code-label">Código de descuento</p>
+          <p class="code-line">
+            <span class="code-value">BODA YUSIN Y HENRY</span>
+            <button class="copy-btn copy-plain" data-copy="BODA YUSIN Y HENRY" aria-label="Copiar el código BODA YUSIN Y HENRY">
+              <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+              <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
+            </button>
+          </p>
+          <div class="hotel-actions">
+            <span class="hotel-note">Marca la opción 2 · Recepción</span>
+            <div class="hotel-btns">
+              <a class="btn hotel-call" href="tel:+528334780340">
+                <svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
+                Llamar
+              </a>
+              <a class="btn ghost" href="https://maps.app.goo.gl/Casvgv2auvKDiBa58?g_st=ic" target="_blank" rel="noopener">Ver mapa</a>
             </div>
-            <div class="bank-row"><div><span class="lbl">Teléfono</span><span class="val">(833) 478 0340 opción 2 (Recepción)</span></div></div>
           </div>
-          <a class="btn ghost" href="https://maps.app.goo.gl/Casvgv2auvKDiBa58?g_st=ic" target="_blank" rel="noopener">Ver mapa</a>
         </div>
       </div>
     </div>
@@ -885,17 +1013,29 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
         <svg class="gift-icon" viewBox="0 0 24 24"><path d="M3 5m0 3a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-12a3 3 0 0 1 -3 -3z" /><path d="M3 10l18 0" /><path d="M7 15l.01 0" /><path d="M11 15l2 0" /></svg>
         <h3>Transferencia</h3>
         <div class="bank-rows">
-          <div class="bank-row"><div><span class="lbl">Entidad financiera</span><span class="val">Nu México</span></div></div>
-          <div class="bank-row"><div><span class="lbl">Beneficiario</span><span class="val">Henry Ayala García</span></div></div>
+          <div class="bank-row"><span class="lbl">Entidad financiera</span><span class="val">Nu México</span></div>
+          <div class="bank-row"><span class="lbl">Beneficiario</span><span class="val">Henry Ayala García</span></div>
           <div class="bank-row">
-            <div><span class="lbl">CLABE</span><span class="val">638 180 01018858014 8</span></div>
-            <button class="copy-btn" data-copy="638180010188580148">Copiar</button>
+            <span class="lbl">CLABE</span>
+            <span class="val-row">
+              <span class="val">638 180 01018858014 8</span>
+              <button class="copy-btn copy-plain" data-copy="638180010188580148" aria-label="Copiar la CLABE">
+                <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+                <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
+              </button>
+            </span>
           </div>
           <div class="bank-row">
-            <div><span class="lbl">Tarjeta</span><span class="val">5101 2502 0300 5614</span></div>
-            <button class="copy-btn" data-copy="5101250203005614">Copiar</button>
+            <span class="lbl">Tarjeta</span>
+            <span class="val-row">
+              <span class="val">5101 2502 0300 5614</span>
+              <button class="copy-btn copy-plain" data-copy="5101250203005614" aria-label="Copiar el número de tarjeta">
+                <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+                <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
+              </button>
+            </span>
           </div>
-          <div class="bank-row"><div><span class="lbl">Referencia</span><span class="val">Regalo de Boda</span></div></div>
+          <div class="bank-row"><span class="lbl">Referencia</span><span class="val">Regalo de Boda</span></div>
         </div>
       </div>
     </div>
@@ -1035,11 +1175,21 @@ setTimeout(()=>{ document.querySelectorAll('.reveal:not(.in)').forEach(el=>el.cl
 
 // ═══ Copiar datos bancarios ═══
 document.querySelectorAll('.copy-btn').forEach(btn=>{
+  // los botones de hotel son solo icono (confirman cambiando a palomita);
+  // los de datos bancarios siguen siendo de texto
+  const esIcono = !!btn.querySelector('.ico');
+  const etiqueta = btn.getAttribute('aria-label');
   btn.addEventListener('click', async ()=>{
     try{
       await navigator.clipboard.writeText(btn.dataset.copy);
-      btn.textContent='Copiado ✓'; btn.classList.add('done');
-      setTimeout(()=>{ btn.textContent='Copiar'; btn.classList.remove('done'); }, 2200);
+      btn.classList.add('done');
+      if(esIcono){ btn.setAttribute('aria-label','Código copiado'); }
+      else{ btn.textContent='Copiado ✓'; }
+      setTimeout(()=>{
+        btn.classList.remove('done');
+        if(esIcono){ btn.setAttribute('aria-label', etiqueta); }
+        else{ btn.textContent='Copiar'; }
+      }, 2200);
     }catch(e){}
   });
 });
