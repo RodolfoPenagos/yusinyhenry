@@ -474,9 +474,14 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 :focus-visible{outline:2px solid var(--mocha-deep);outline-offset:3px;border-radius:2px}
 
 /* ══════════ GUÍA DEL INVITADO ══════════ */
-/* misma relacion que en vestimenta y regalos: seccion ivory + cards blancas.
-   Antes estaba invertida (seccion blanca + cards ivory) y rompia la consistencia. */
-#guest-guide{background:var(--ivory)}
+/* seccion clara para no romper la alternancia claro/arena de toda la pagina
+   (dresscode arena -> guest-guide claro -> gifts arena). Las cards siguen blancas
+   como en vestimenta y regalos: resaltan por borde+sombra, no por el relleno
+   (blanco y arena son casi el mismo tono), asi que se ven bien sobre claro. */
+#guest-guide{background:var(--white)}
+/* sobre fondo claro el borde de las cards se refuerza un pelin para que no se
+   diluyan (en las secciones arena el contraste del relleno ya ayuda) */
+#guest-guide .gift-card{border-color:rgba(214,196,163,.85);box-shadow:0 14px 32px rgba(122,92,71,.10)}
 /* 700px es la medida de lectura para texto; una fila de 3 cards necesita mas aire.
    El texto de la seccion sigue acotado por sus propios max-width (520-540px). */
 #guest-guide .wrap,#gifts .wrap{max-width:1040px}
