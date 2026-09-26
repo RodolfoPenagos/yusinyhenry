@@ -474,20 +474,27 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 :focus-visible{outline:2px solid var(--mocha-deep);outline-offset:3px;border-radius:2px}
 
 /* ══════════ GUÍA DEL INVITADO ══════════ */
-/* seccion clara para no romper la alternancia claro/arena de toda la pagina
-   (dresscode arena -> guest-guide claro -> gifts arena). Las cards siguen blancas
-   como en vestimenta y regalos: resaltan por borde+sombra, no por el relleno
-   (blanco y arena son casi el mismo tono), asi que se ven bien sobre claro. */
-#guest-guide{background:var(--white)}
-/* sobre fondo claro el borde de las cards se refuerza un pelin para que no se
-   diluyan (en las secciones arena el contraste del relleno ya ayuda) */
-#guest-guide .gift-card{border-color:rgba(214,196,163,.85);box-shadow:0 14px 32px rgba(122,92,71,.10)}
-/* 700px es la medida de lectura para texto; una fila de 3 cards necesita mas aire.
-   El texto de la seccion sigue acotado por sus propios max-width (520-540px). */
-#guest-guide .wrap,#gifts .wrap{max-width:1040px}
-#guest-guide h2,#gifts h2{max-width:700px;margin-left:auto;margin-right:auto}
-#guest-guide .intro{max-width:540px;margin:var(--s2) auto 0;font-style:italic;font-weight:300;font-size:var(--fs-lead);color:var(--mocha)}
-.guide-block{margin-top:var(--s8)}
+/* La Guía es una banda CLARA que separa el contenido de arriba de los servicios.
+   A partir de ahí sigue la alternancia claro/arena del resto de la pagina:
+   dresscode(arena) -> guia(claro) -> hospedaje(arena) -> belleza(claro)
+   -> regalos(arena) -> rsvp(claro). */
+#guide-intro{background:var(--white)}
+#lodging{background:var(--ivory)}
+#beauty{background:var(--white)}
+/* separador y servicios forman un grupo: se acercan un poco entre si (menos
+   padding en los bordes internos) para no quedar tan dispersos */
+#guide-intro{padding-bottom:var(--s8)}
+#lodging{padding-top:var(--s8)}
+#beauty{padding-top:var(--s8)}
+/* sobre fondo claro (belleza) el borde de las cards se refuerza un pelin para que
+   no se diluyan; en hospedaje (arena) el contraste del relleno ya ayuda */
+#beauty .gift-card{border-color:rgba(214,196,163,.85);box-shadow:0 14px 32px rgba(122,92,71,.10)}
+/* una fila de 3 cards necesita mas aire que la medida de lectura de 700px */
+#lodging .wrap,#beauty .wrap,#gifts .wrap{max-width:1040px}
+#gifts h2{max-width:700px;margin-left:auto;margin-right:auto}
+#guide-intro .intro{max-width:540px;margin:var(--s2) auto 0;font-style:italic;font-weight:300;font-size:var(--fs-lead);color:var(--mocha)}
+/* cada guide-block va solo en su seccion: el padding de la seccion da el espacio */
+.guide-block{margin-top:0}
 .guide-icon{width:52px;height:52px;margin:0 auto var(--s2);stroke:var(--mocha);fill:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
 .guide-cat{font-family:'Roboto Serif',serif;font-weight:500;font-size:var(--fs-lead);letter-spacing:.04em;color:var(--mocha)}
 .guide-note{max-width:520px;margin:var(--s1) auto 0;font-style:italic;font-weight:300;font-size:var(--fs-body);color:var(--ink)}
@@ -885,13 +892,18 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
   </div>
 </section>
 
-<!-- ═══════════ GUÍA DEL INVITADO ═══════════ -->
-<section id="guest-guide">
+<!-- ═══════════ GUÍA DEL INVITADO (banda separadora clara) ═══════════ -->
+<section id="guide-intro">
   <div class="wrap reveal">
     <div class="eyebrow">Para tu visita</div>
     <h2>Guía del <em>invitado</em></h2>
     <p class="intro">Si viajas a Tampico para acompañarnos, aquí tienes algunas recomendaciones para tu estancia.</p>
+  </div>
+</section>
 
+<!-- ═══════════ HOSPEDAJE ═══════════ -->
+<section id="lodging">
+  <div class="wrap reveal">
     <div class="guide-block">
       <svg class="guide-icon" viewBox="0 0 24 24"><path d="M3 7v11m0 -4h18m0 4v-8a2 2 0 0 0 -2 -2h-8v6" /><path d="M7 10m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
       <h3 class="guide-cat">Hospedaje</h3>
@@ -964,7 +976,12 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
         </div>
       </div>
     </div>
+  </div>
+</section>
 
+<!-- ═══════════ BELLEZA ═══════════ -->
+<section id="beauty">
+  <div class="wrap reveal">
     <div class="guide-block">
       <svg class="guide-icon" viewBox="0 0 24 24"><path d="M3 21v-4a4 4 0 1 1 4 4h-4" /><path d="M21 3a16 16 0 0 0 -12.8 10.2" /><path d="M21 3a16 16 0 0 1 -10.2 12.8" /><path d="M10.6 9a9 9 0 0 1 4.4 4.4" /></svg>
       <h3 class="guide-cat">Belleza</h3>
