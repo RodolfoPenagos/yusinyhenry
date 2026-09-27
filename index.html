@@ -482,6 +482,9 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 /* sobre fondo claro (belleza) el borde de las cards se refuerza un pelin para que
    no se diluyan; en hospedaje (arena) el contraste del relleno ya ayuda */
 #beauty .gift-card{border-color:rgba(214,196,163,.85);box-shadow:0 14px 32px rgba(122,92,71,.10)}
+/* Belleza tiene 2 recomendaciones: 2 columnas centradas (no 3 con un hueco) */
+#beauty .gift-grid{max-width:680px;margin-left:auto;margin-right:auto}
+@media(min-width:760px){#beauty .gift-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* una fila de 3 cards necesita mas aire que la medida de lectura de 700px */
 #lodging .wrap,#beauty .wrap,#gifts .wrap{max-width:1040px}
 #gifts h2{max-width:700px;margin-left:auto;margin-right:auto}
@@ -966,18 +969,12 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
       <p class="guide-note">Opciones de maquillaje y peinado que recomendamos.</p>
       <div class="gift-grid">
         <div class="gift-card reveal">
-          <img class="artist-avatar" src="assets/maquillistas/mstudio.jpg" alt="Mstudio" loading="lazy">
-          <h3>Mstudio</h3>
-          <p class="detail">@mstudiiomx</p>
-          <a class="btn ghost" href="https://www.instagram.com/mstudiiomx" target="_blank" rel="noopener">Ver Instagram</a>
-        </div>
-        <div class="gift-card reveal d1">
           <img class="artist-avatar" src="assets/maquillistas/balbina.jpg" alt="Balbina de la Vega" loading="lazy">
           <h3>Balbina de la Vega</h3>
           <p class="detail">@balbinadelavegamaquillista</p>
           <a class="btn ghost" href="https://www.instagram.com/balbinadelavegamaquillista" target="_blank" rel="noopener">Ver Instagram</a>
         </div>
-        <div class="gift-card reveal d2">
+        <div class="gift-card reveal d1">
           <img class="artist-avatar" src="assets/maquillistas/elide.jpg" alt="Makeup by Elide" loading="lazy">
           <h3>Elide</h3>
           <p class="detail">@makeupbyelide</p>
