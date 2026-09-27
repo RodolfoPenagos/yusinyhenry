@@ -18,7 +18,7 @@ Sitio web de invitación de boda. Single-page, HTML/CSS/JS vanilla, sin framewor
 - **Padres del novio:** Enrique Ayala Piñeyro y Laura Lilia García Ponce
 - **Dress code:** Formal de noche (caballeros: traje formal · damas: vestido largo de noche)
 - **Solo adultos** (redactado de forma amable en la sección dress code)
-- **RSVP:** WhatsApp +52 833 148 8043, fecha límite 14 de octubre de 2026
+- **RSVP:** WhatsApp +52 833 261 7772, fecha límite 14 de octubre de 2026
 - **Regalos:** Liverpool evento 51974215 · Amazon amazon.com.mx/wedding/share/YusinyHenry · BBVA (datos en la sección, con botones de copiar)
 
 ## Sistema de diseño
