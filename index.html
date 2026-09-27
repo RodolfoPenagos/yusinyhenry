@@ -645,6 +645,17 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
   #rsvp-fab{transform:none!important;transition:opacity .35s}
   html{scroll-behavior:auto}
 }
+
+/* ══════════ EXPLORACIÓN: radio de 8px en botones y cards ══════════
+   Todo el sitio usaba 2px (muy angular). Se suaviza a 8px en botones y cards;
+   las fotos y los marcos interiores llevan un radio un poco menor (regla de
+   anidado) para que las esquinas acompañen. No se tocan los circulos (musica,
+   flechas, avatares) ni las formas especiales (countdown, galeria).
+   Para revertir: borrar este bloque. */
+.btn,.hero-rsvp,#rsvp-fab,.copy-btn,
+.family-card,.event-card,.dress-block,.adults-note,.gift-card{border-radius:8px}
+.hotel-photo,.dress-photo{border-radius:6px}
+.event-card::before,.dress-block::before,.gift-card::before{border-radius:5px}
 </style>
 <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 </head>
