@@ -374,13 +374,6 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
   content:'';position:absolute;inset:9px;
   border:1px solid rgba(214,196,163,.4);border-radius:1px;pointer-events:none;
 }
-.event-card .ec-corner{
-  position:absolute;width:34px;height:34px;stroke:var(--champagne);fill:none;stroke-width:1.1;
-}
-.ec-tl{top:16px;left:16px}
-.ec-tr{top:16px;right:16px;transform:scaleX(-1)}
-.ec-bl{bottom:16px;left:16px;transform:scaleY(-1)}
-.ec-br{bottom:16px;right:16px;transform:scale(-1)}
 .event-icon{width:56px;height:56px;margin:0 auto var(--s3);stroke:var(--mocha);fill:none;stroke-width:.8;stroke-linecap:round;stroke-linejoin:round}
 .event-card h3{
   font-weight:500;font-size:var(--fs-small);letter-spacing:.32em;color:var(--mocha);
@@ -658,13 +651,6 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
       <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" transform="translate(-2,-1) scale(.82)"/>
       <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" transform="translate(18,4) scale(.5)" opacity=".55"/>
     </g>
-    <!-- esquina de tarjeta -->
-    <g id="cardcorner">
-      <path d="M2 32 C2 15, 15 2, 32 2"/>
-      <path d="M6 20 q-2 -5 3 -8 q3.5 4.5 -3 8z"/>
-      <circle cx="32" cy="2" r="1.6"/>
-      <circle cx="2" cy="32" r="1.6"/>
-    </g>
   </defs>
 </svg>
 
@@ -804,10 +790,6 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
     <h2>Ceremonia <em>&amp;</em> Recepción</h2>
     <div class="event-grid">
       <div class="event-card reveal d1">
-        <svg class="ec-corner ec-tl" viewBox="0 0 34 34"><use href="#cardcorner"/></svg>
-        <svg class="ec-corner ec-tr" viewBox="0 0 34 34"><use href="#cardcorner"/></svg>
-        <svg class="ec-corner ec-bl" viewBox="0 0 34 34"><use href="#cardcorner"/></svg>
-        <svg class="ec-corner ec-br" viewBox="0 0 34 34"><use href="#cardcorner"/></svg>
         <svg class="event-icon" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M10 21v-4a2 2 0 0 1 4 0v4"/><path d="M10 5h4"/><path d="M12 3v5"/><path d="M6 21v-7m-2 2l8-8 8 8m-2-2v7"/></svg>
         <h3>Ceremonia religiosa</h3>
         <div class="time">8:30 <small>pm</small></div>
@@ -816,10 +798,6 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
         <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Iglesia+San+Pedro+y+San+Pablo+Tampico+Tamaulipas" target="_blank" rel="noopener"><svg class="bi" viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg> ¿Cómo llegar?</a>
       </div>
       <div class="event-card reveal d2">
-        <svg class="ec-corner ec-tl" viewBox="0 0 34 34"><use href="#cardcorner"/></svg>
-        <svg class="ec-corner ec-tr" viewBox="0 0 34 34"><use href="#cardcorner"/></svg>
-        <svg class="ec-corner ec-bl" viewBox="0 0 34 34"><use href="#cardcorner"/></svg>
-        <svg class="ec-corner ec-br" viewBox="0 0 34 34"><use href="#cardcorner"/></svg>
         <svg class="event-icon" viewBox="0 0 24 24"><path d="M9 21h6" /><path d="M12 16v5" /><path d="M12 5m-4 0a4 2 0 1 0 8 0a4 2 0 1 0 -8 0" /><path d="M8 5c0 6.075 1.79 11 4 11s4 -4.925 4 -11" /></svg>
         <h3>Recepción</h3>
         <div class="time">9:30 <small>pm</small></div>
