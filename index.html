@@ -79,20 +79,42 @@ footer::after{
 section,footer{position:relative;z-index:1}
 
 /* ══════════ MÚSICA ══════════ */
-#music-btn{
+/* mini reproductor flotante (abajo-izquierda): botón play/pausa + título */
+#music-player{
   position:fixed;left:18px;bottom:18px;z-index:900;
-  width:48px;height:48px;border-radius:50%;
-  background:var(--white);border:1px solid var(--champagne);
-  color:var(--mocha);cursor:pointer;
+  display:flex;align-items:center;gap:var(--s2);
+  padding:6px 16px 6px 6px;
+  background:var(--white);border:1px solid var(--champagne);border-radius:999px;
   box-shadow:0 6px 18px rgba(122,92,71,.18);
-  display:flex;align-items:center;justify-content:center;
-  transition:transform .3s;
-  opacity:0;pointer-events:none;
+  opacity:0;transform:translateY(8px);pointer-events:none;
+  transition:opacity .4s,transform .4s;
 }
-#music-btn.show{opacity:1;pointer-events:auto}
-#music-btn:hover{transform:scale(1.08)}
-#music-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-#music-btn.playing svg{animation:sway 2s ease-in-out infinite}
+#music-player.show{opacity:1;transform:none;pointer-events:auto}
+#music-btn{
+  width:38px;height:38px;border-radius:50%;flex-shrink:0;cursor:pointer;
+  background:var(--mocha-deep);border:none;color:var(--white);
+  display:flex;align-items:center;justify-content:center;transition:transform .3s;
+}
+#music-btn:hover{transform:scale(1.06)}
+.mp-ico{width:15px;height:15px;fill:currentColor}
+.mp-play{margin-left:2px} /* centrado óptico del triángulo dentro del círculo */
+.mp-pause{display:none}
+#music-player.playing .mp-play{display:none}
+#music-player.playing .mp-pause{display:block}
+.mp-info{display:flex;flex-direction:column;line-height:1.15;text-align:left}
+.mp-title{font-family:'Roboto Serif',serif;font-size:var(--fs-small);font-weight:500;color:var(--mocha-deep)}
+.mp-sub{font-family:'Roboto Serif',serif;font-size:var(--fs-caption);letter-spacing:.04em;color:var(--mocha)}
+/* ecualizador: aparece y se anima solo cuando suena */
+.mp-eq{display:none;align-items:flex-end;gap:2px;height:15px;margin-left:2px}
+#music-player.playing .mp-eq{display:flex}
+.mp-eq i{width:3px;background:var(--mocha);border-radius:1px;transform-origin:bottom;animation:eq .9s ease-in-out infinite}
+.mp-eq i:nth-child(1){height:6px}
+.mp-eq i:nth-child(2){height:15px;animation-delay:.15s}
+.mp-eq i:nth-child(3){height:9px;animation-delay:.3s}
+/* en móvil se compacta para no chocar con el botón de confirmar:
+   ≤430 oculta el subtítulo (queda el título); ≤374 deja solo el botón */
+@media(max-width:430px){.mp-sub{display:none}}
+@media(max-width:374px){.mp-title{display:none}}
 
 /* Botón flotante para confirmar asistencia: aparece cuando el botón del hero
    sale del viewport y se oculta al llegar a la sección de RSVP. Va abajo-derecha
@@ -114,7 +136,7 @@ section,footer{position:relative;z-index:1}
 #rsvp-fab svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 /* en pantallas angostas solo "Confirmar" para no invadir el boton de musica */
 @media(max-width:430px){#rsvp-fab .fab-full{display:none}}
-@keyframes sway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+@keyframes eq{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
 
 /* ══════════ ORNAMENTOS ══════════ */
 .divider{display:flex;align-items:center;justify-content:center;gap:var(--s2);margin:var(--s3) auto}
@@ -278,7 +300,7 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 .btn.ghost{background:transparent;color:var(--mocha-deep);border-color:var(--mocha-deep);box-shadow:none}
 .btn.ghost:hover{background:var(--mocha);border-color:var(--mocha);color:var(--white)}
 .btn .bi{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
-.event-card .place-city{font-family:'Roboto Serif',serif;font-weight:300;font-size:var(--fs-caption);letter-spacing:.24em;text-transform:uppercase;color:var(--mocha-deep);margin-top:var(--s1)}
+.event-item .place-city{font-family:'Roboto Serif',serif;font-weight:300;font-size:var(--fs-caption);letter-spacing:.24em;text-transform:uppercase;color:var(--mocha-deep);margin-top:var(--s1)}
 
 /* ══════════ HISTORIA ══════════ */
 #story{background:var(--white)}
@@ -383,53 +405,60 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 }
 
 /* ══════════ EVENTOS ══════════ */
-#events{background:var(--ivory)}
-.event-grid{display:grid;grid-template-columns:1fr;gap:var(--s4);margin-top:var(--s6)}
-@media(min-width:680px){.event-grid{grid-template-columns:1fr 1fr}}
-.event-card{
-  border:1px solid rgba(214,196,163,.65);border-radius:2px;
-  padding:var(--s6) var(--s4);background:var(--white);position:relative;
-  box-shadow:0 16px 40px rgba(122,92,71,.10);
+/* Ceremonia & Recepción: imagen a todo lo ancho con corte ondulado, sin cajas */
+#events{background:var(--ivory);padding:0}
+#events .wrap{padding:var(--s5) var(--s3) var(--s12)}
+.events-hero{position:relative;width:100%;height:clamp(260px,44vw,440px);overflow:hidden}
+.events-hero>img{width:100%;height:100%;object-fit:cover;object-position:center 42%;display:block}
+/* la onda: relleno del color de la sección subiendo sobre la imagen + línea dorada */
+.events-wave{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:clamp(46px,7vw,84px);display:block}
+/* el relleno de la onda va un pelín más oscuro que --ivory (#F5F0EB) para igualar
+   el tono del fondo CON textura de tela (que oscurece ~7 por canal); si se deja
+   en ivory puro, la franja lisa se ve más clara ("blanca") sobre el textil */
+.wave-fill{fill:#EEE9E4}
+.wave-line{fill:none;stroke:var(--champagne);stroke-width:1.5;vector-effect:non-scaling-stroke}
+/* los dos eventos como texto centrado, con una línea divisoria sutil (sin caja) */
+.event-flow{display:grid;grid-template-columns:1fr;gap:var(--s6);margin-top:var(--s5);max-width:760px;margin-left:auto;margin-right:auto}
+.event-sep{display:none}
+@media(min-width:680px){
+  .event-flow{grid-template-columns:1fr 1px 1fr;align-items:center}
+  .event-sep{display:block;align-self:stretch;width:1px;margin:var(--s3) 0;
+    background:linear-gradient(to bottom,transparent,rgba(214,196,163,.9),transparent)}
 }
-.event-card::before{
-  content:'';position:absolute;inset:9px;
-  border:1px solid rgba(214,196,163,.4);border-radius:1px;pointer-events:none;
-}
-.event-icon{width:56px;height:56px;margin:0 auto var(--s3);stroke:var(--mocha);fill:none;stroke-width:.8;stroke-linecap:round;stroke-linejoin:round}
-.event-card h3{
+.event-item{display:flex;flex-direction:column;align-items:center;text-align:center}
+.event-icon{width:52px;height:52px;margin:0 auto var(--s2);stroke:var(--mocha);fill:none;stroke-width:.8;stroke-linecap:round;stroke-linejoin:round}
+.event-item h3{
   font-weight:500;font-size:var(--fs-small);letter-spacing:.32em;color:var(--mocha);
   text-transform:uppercase;font-family:'Roboto Serif',serif;
 }
-.event-card .time{
+.event-item .time{
   font-family:'Roboto Serif',serif;font-size:48px;font-weight:400;
   color:var(--mocha);margin:var(--s2) 0 var(--s1);line-height:1;
 }
-.event-card .time small{font-size:var(--fs-lead);font-style:italic;color:var(--mocha)}
-.event-card .place{font-size:var(--fs-lead);color:var(--ink);font-style:italic;line-height:1.6} /* 32px */
-.event-card .btn{margin-top:var(--s3);padding:var(--s2) var(--s3);font-size:var(--fs-caption)}
+.event-item .time small{font-size:var(--fs-lead);font-style:italic;color:var(--mocha)}
+.event-item .place{font-size:var(--fs-lead);color:var(--ink);font-style:italic;line-height:1.6} /* 32px */
+.event-item .btn{margin-top:var(--s3);padding:var(--s2) var(--s3);font-size:var(--fs-caption)}
 
 /* ══════════ DRESS CODE ══════════ */
-#dresscode{background:var(--ivory)}
-/* dos bloques: caballeros y damas, cada uno con su vestimenta y su paleta */
-.dress-intro{max-width:520px;margin:var(--s4) auto var(--s6);font-style:italic;font-weight:300;font-size:var(--fs-body);color:var(--mocha)}
-.dress-block{
-  margin-top:var(--s4);padding:var(--s6) var(--s3) var(--s5);
-  background:var(--white);border:1px solid rgba(214,196,163,.6);border-radius:2px;
-  position:relative;box-shadow:0 12px 30px rgba(122,92,71,.08);
-}
-.dress-block::before{content:'';position:absolute;inset:7px;border:1px solid rgba(214,196,163,.35);pointer-events:none}
-.dress-block:first-of-type{margin-top:var(--s6)}
-.dress-photo{
-  display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
-  border-radius:2px;margin-bottom:var(--s3);
-  box-shadow:0 6px 18px rgba(122,92,71,.14);
-}
-.dress-pin{margin-top:var(--s4)}
-.dress-block h3{
+/* Código de vestimenta — patrón imagen + onda, sin cajas (igual que Ceremonia) */
+#dresscode{background:var(--ivory);padding:0}
+#dresscode>.wrap{padding-left:var(--s3);padding-right:var(--s3)}
+#dresscode>.wrap.dress-top{padding-top:var(--s12)}
+#dresscode>.wrap.dress-end{padding-bottom:var(--s12)}
+.dress-intro{max-width:520px;margin:var(--s4) auto 0;font-style:italic;font-weight:300;font-size:var(--fs-body);color:var(--mocha)}
+/* imagen a todo lo ancho con corte ondulado */
+.dress-hero{position:relative;width:100%;height:clamp(300px,46vw,440px);overflow:hidden;margin-top:var(--s8)}
+.dress-hero>img{width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block}
+/* el contenido sube a ras de la onda: sin el hueco en blanco que quedaba debajo
+   (fondo ivory = relleno de la onda, así que el empalme no se nota) */
+.dress-content{padding-top:0;text-align:center}
+@media(min-width:680px){.dress-content{margin-top:calc(-1 * var(--s2))}}
+.dress-content h3{
   font-family:'Roboto Serif',serif;font-weight:400;font-size:var(--fs-caption);
   letter-spacing:.38em;text-transform:uppercase;color:var(--mocha-deep);margin-bottom:var(--s1);
 }
 .dress-what{font-style:italic;color:var(--ink);font-size:var(--fs-body);margin-bottom:var(--s4)} /* dato informativo: AA */
+.dress-pin{margin-top:var(--s4)}
 .swatches{display:flex;justify-content:center;gap:clamp(8px,2.6vw,18px);flex-wrap:wrap}
 .swatch{display:block;width:clamp(32px,10.5vw,56px);height:clamp(32px,10.5vw,56px);border-radius:50%;border:1px solid rgba(122,92,71,.16);box-shadow:0 5px 14px rgba(122,92,71,.14)}
 .adults-note{
@@ -493,13 +522,20 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
    dresscode(arena) -> guia(claro) -> hospedaje(arena) -> belleza(claro)
    -> regalos(arena) -> rsvp(claro). */
 #guide-intro{background:var(--white)}
-#lodging{background:var(--ivory)}
+#lodging{background:var(--ivory);padding:0 0 var(--s12)}
 #beauty{background:var(--white)}
 /* separador y servicios forman un grupo: se acercan un poco entre si (menos
    padding en los bordes internos) para no quedar tan dispersos */
 #guide-intro{padding-bottom:var(--s8)}
-#lodging{padding-top:var(--s8)}
 #beauty{padding-top:var(--s8)}
+/* Hospedaje — patrón imagen + onda, sin cajas (igual que Ceremonia y vestimenta) */
+#lodging>.wrap{padding-left:var(--s3);padding-right:var(--s3)}
+#lodging>.wrap.lodging-top{padding-top:var(--s8)}
+.lodging-hero{position:relative;width:100%;height:clamp(240px,40vw,380px);overflow:hidden;margin-top:var(--s8)}
+.lodging-hero>img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.lodging-content{max-width:460px;margin-left:auto;margin-right:auto;padding-top:0;text-align:center}
+@media(min-width:680px){.lodging-content{margin-top:calc(-1 * var(--s2))}}
+.lodging-content h3{font-size:var(--fs-lead);letter-spacing:.02em;font-weight:400;color:var(--mocha);line-height:1.25;margin-bottom:var(--s3)}
 /* sobre fondo claro (belleza) el borde de las cards se refuerza un pelin para que
    no se diluyan; en hospedaje (arena) el contraste del relleno ya ayuda */
 #beauty .gift-card{border-color:rgba(214,196,163,.85);box-shadow:0 14px 32px rgba(122,92,71,.10)}
@@ -507,7 +543,7 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 #beauty .gift-grid{max-width:680px;margin-left:auto;margin-right:auto}
 @media(min-width:760px){#beauty .gift-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* una fila de 3 cards necesita mas aire que la medida de lectura de 700px */
-#lodging .wrap,#beauty .wrap,#gifts .wrap{max-width:1040px}
+#beauty .wrap,#gifts .wrap{max-width:1040px}
 #gifts h2{max-width:700px;margin-left:auto;margin-right:auto}
 #guide-intro .intro{max-width:540px;margin:var(--s2) auto 0;font-style:italic;font-weight:300;font-size:var(--fs-lead);color:var(--mocha)}
 /* cada guide-block va solo en su seccion: el padding de la seccion da el espacio */
@@ -519,9 +555,8 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 /* las cards de hotel llevan mas datos que las de belleza: en tablet van de 2 en 2
    para que el codigo de reservacion quepa completo en una linea */
 @media(min-width:760px) and (max-width:1119px){
-  .hotel-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  /* la card de transferencia lleva tantos datos como las de hotel: en 3 columnas
-     el icono de copiar se baja de renglon y se despega del dato */
+  /* la card de transferencia (regalos) lleva muchos datos: en 3 columnas el icono
+     de copiar se baja de renglon y se despega del dato, así que van de 2 en 2 */
   #gifts .gift-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 /* foto del hotel (marco horizontal arriba de la tarjeta) */
@@ -529,15 +564,9 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 .hotel-photo--ph{display:flex;align-items:center;justify-content:center;background:var(--white);border:1px solid rgba(214,196,163,.6)}
 .hotel-photo--ph svg{width:40px;height:40px;stroke:var(--champagne);fill:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round}
 
-/* ══════ CARD DE HOTEL ══════
+/* ══════ HOSPEDAJE (código + acciones) ══════
    El código de descuento es el dato que el invitado necesita: se lee, se dice por
-   teléfono. Sin caja alrededor: la etiqueta y el dato se sostienen solos. */
-.hotel-card h3{
-  font-size:var(--fs-lead);letter-spacing:.02em;text-transform:none;
-  font-weight:400;color:var(--mocha);line-height:1.2;margin-bottom:var(--s3);
-  /* reserva 2 lineas para que los nombres largos no desalineen el resto de la card */
-  min-height:48px;display:flex;align-items:center;
-}
+   teléfono. Sobre el fondo, sin caja. */
 .code-label{
   display:block;font-family:'Roboto Serif',serif;font-size:var(--fs-caption);
   letter-spacing:.2em;text-transform:uppercase;color:var(--mocha-deep);
@@ -641,7 +670,7 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
 .reveal.d2{transition-delay:.24s}
 @media(prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none}
-  .scroll-cue svg,#music-btn.playing svg{animation:none!important}
+  .scroll-cue svg,.mp-eq i{animation:none!important}
   #rsvp-fab{transform:none!important;transition:opacity .35s}
   html{scroll-behavior:auto}
 }
@@ -653,9 +682,9 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
    flechas, avatares) ni las formas especiales (countdown, galeria).
    Para revertir: borrar este bloque. */
 .btn,.hero-rsvp,#rsvp-fab,.copy-btn,
-.family-card,.event-card,.dress-block,.adults-note,.gift-card{border-radius:8px}
-.hotel-photo,.dress-photo{border-radius:6px}
-.event-card::before,.dress-block::before,.gift-card::before{border-radius:5px}
+.family-card,.adults-note,.gift-card{border-radius:8px}
+.hotel-photo{border-radius:6px}
+.gift-card::before{border-radius:5px}
 </style>
 <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 </head>
@@ -692,11 +721,19 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
 
 <!-- ═══════════ MÚSICA ═══════════ -->
 <audio id="bg-music" loop preload="none">
-  <source src="" type="audio/mpeg">
+  <source src="assets/lover.mp3" type="audio/mpeg">
 </audio>
-<button id="music-btn" aria-label="Reproducir o pausar música">
-  <svg viewBox="0 0 24 24"><path d="M3 17a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M13 17a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M9 17v-13h10v13" /><path d="M9 8h10" /></svg>
-</button>
+<div id="music-player">
+  <button id="music-btn" aria-label="Reproducir nuestra canción">
+    <svg class="mp-ico mp-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13 -8z"/></svg>
+    <svg class="mp-ico mp-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3v14h-3z M14 5h3v14h-3z"/></svg>
+  </button>
+  <span class="mp-info">
+    <span class="mp-title">Lover</span>
+    <span class="mp-sub">Nuestra canción</span>
+  </span>
+  <span class="mp-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+</div>
 <a id="rsvp-fab" href="https://wa.me/528332617772?text=Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda%20de%20Yusin%20y%20Henry%20%F0%9F%A4%8D%20Somos%3A%20" target="_blank" rel="noopener" aria-label="Confirmar asistencia por WhatsApp">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9" /><path d="M9 10a.5 .5 0 0 0 1 0v-1a.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a.5 .5 0 0 0 0 -1h-1a.5 .5 0 0 0 0 1" /></svg>
   Confirmar<span class="fab-full">&nbsp;asistencia</span>
@@ -817,19 +854,30 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
   </div>
 </section>
 
-<!-- ═══════════ BANNER ═══════════ -->
+<!-- ═══════════ BANNER (oculto a petición) ═══════════
 <section id="banner">
   <img src="assets/banner.jpg" alt="" id="banner-img">
   <div class="veil"><p>Y de repente, todo tuvo sentido…</p></div>
 </section>
+-->
+<!-- Nota: assets/banner.jpg se conserva para la vista previa de WhatsApp (og:image) -->
+
 
 <!-- ═══════════ EVENTOS ═══════════ -->
 <section id="events">
+  <!-- PLACEHOLDER: idealmente una foto de la iglesia o del salón; por ahora la pareja -->
+  <div class="events-hero">
+    <img src="assets/hero-landscape.jpg" alt="Yusin y Henry">
+    <svg class="events-wave" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-fill" d="M0,130 L0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52 L1440,130 Z"/>
+      <path class="wave-line" d="M0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52"/>
+    </svg>
+  </div>
   <div class="wrap reveal">
     <div class="eyebrow">¿Cuándo y dónde?</div>
     <h2>Ceremonia <em>&amp;</em> Recepción</h2>
-    <div class="event-grid">
-      <div class="event-card reveal d1">
+    <div class="event-flow">
+      <div class="event-item">
         <svg class="event-icon" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M10 21v-4a2 2 0 0 1 4 0v4"/><path d="M10 5h4"/><path d="M12 3v5"/><path d="M6 21v-7m-2 2l8-8 8 8m-2-2v7"/></svg>
         <h3>Ceremonia religiosa</h3>
         <div class="time">8:30 <small>pm</small></div>
@@ -837,7 +885,8 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
         <div class="place-city">Tampico, Tamps.</div>
         <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Iglesia+San+Pedro+y+San+Pablo+Tampico+Tamaulipas" target="_blank" rel="noopener"><svg class="bi" viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg> ¿Cómo llegar?</a>
       </div>
-      <div class="event-card reveal d2">
+      <div class="event-sep" aria-hidden="true"></div>
+      <div class="event-item">
         <svg class="event-icon" viewBox="0 0 24 24"><path d="M9 21h6" /><path d="M12 16v5" /><path d="M12 5m-4 0a4 2 0 1 0 8 0a4 2 0 1 0 -8 0" /><path d="M8 5c0 6.075 1.79 11 4 11s4 -4.925 4 -11" /></svg>
         <h3>Recepción</h3>
         <div class="time">9:30 <small>pm</small></div>
@@ -872,35 +921,54 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
 
 <!-- ═══════════ DRESS CODE ═══════════ -->
 <section id="dresscode">
-  <div class="wrap reveal">
+  <div class="wrap dress-top reveal">
     <div class="eyebrow">Código de vestimenta</div>
     <h2>Formal <em>de noche</em></h2>
     <p class="dress-intro">Nos encantaría que nos acompañaran en la paleta de colores de nuestra boda.</p>
-    <div class="dress-block reveal">
-      <img class="dress-photo" src="assets/dress-caballeros.jpg" alt="Caballeros en traje formal oscuro" loading="lazy">
-      <h3>Caballeros</h3>
-      <p class="dress-what">Traje formal</p>
-      <div class="swatches" role="img" aria-label="Paleta para caballeros: negro, gris Oxford, azul marino y café">
-        <span class="swatch" style="background:#20201E"></span>
-        <span class="swatch" style="background:#5C5C5E"></span>
-        <span class="swatch" style="background:#2C3A54"></span>
-        <span class="swatch" style="background:#5F4636"></span>
-      </div>
-      <a class="btn ghost dress-pin" href="https://pin.it/1Wg0K5cqi" target="_blank" rel="noopener">Inspiración</a>
+  </div>
+
+  <!-- Caballeros -->
+  <div class="dress-hero">
+    <img src="assets/dress-caballeros.jpg" alt="Caballeros en traje formal oscuro" style="object-position:center 30%" loading="lazy">
+    <svg class="events-wave" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-fill" d="M0,130 L0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52 L1440,130 Z"/>
+      <path class="wave-line" d="M0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52"/>
+    </svg>
+  </div>
+  <div class="wrap dress-content reveal">
+    <h3>Caballeros</h3>
+    <p class="dress-what">Traje formal</p>
+    <div class="swatches" role="img" aria-label="Paleta para caballeros: negro, gris Oxford, azul marino y café">
+      <span class="swatch" style="background:#20201E"></span>
+      <span class="swatch" style="background:#5C5C5E"></span>
+      <span class="swatch" style="background:#2C3A54"></span>
+      <span class="swatch" style="background:#5F4636"></span>
     </div>
-    <div class="dress-block reveal">
-      <img class="dress-photo" src="assets/dress-damas.jpg" alt="Damas en vestido largo en tonos verde olivo y café" loading="lazy">
-      <h3>Damas</h3>
-      <p class="dress-what">Vestido largo de noche</p>
-      <div class="swatches" role="img" aria-label="Paleta para damas: negro, café, marrón, verde oliva y azul">
-        <span class="swatch" style="background:#20201E"></span>
-        <span class="swatch" style="background:#5F4636"></span>
-        <span class="swatch" style="background:#7E4E37"></span>
-        <span class="swatch" style="background:#5E5C34"></span>
-        <span class="swatch" style="background:#2E3C58"></span>
-      </div>
-      <a class="btn ghost dress-pin" href="https://pin.it/3jKJG6Z2p" target="_blank" rel="noopener">Inspiración</a>
+    <a class="btn ghost dress-pin" href="https://pin.it/1Wg0K5cqi" target="_blank" rel="noopener">Inspiración</a>
+  </div>
+
+  <!-- Damas -->
+  <div class="dress-hero">
+    <img src="assets/dress-damas.jpg" alt="Damas en vestido largo en tonos verde olivo y café" style="object-position:center 55%" loading="lazy">
+    <svg class="events-wave" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-fill" d="M0,130 L0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52 L1440,130 Z"/>
+      <path class="wave-line" d="M0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52"/>
+    </svg>
+  </div>
+  <div class="wrap dress-content reveal">
+    <h3>Damas</h3>
+    <p class="dress-what">Vestido largo de noche</p>
+    <div class="swatches" role="img" aria-label="Paleta para damas: negro, café, marrón, verde oliva y azul">
+      <span class="swatch" style="background:#20201E"></span>
+      <span class="swatch" style="background:#5F4636"></span>
+      <span class="swatch" style="background:#7E4E37"></span>
+      <span class="swatch" style="background:#5E5C34"></span>
+      <span class="swatch" style="background:#2E3C58"></span>
     </div>
+    <a class="btn ghost dress-pin" href="https://pin.it/3jKJG6Z2p" target="_blank" rel="noopener">Inspiración</a>
+  </div>
+
+  <div class="wrap dress-end">
     <div class="adults-note reveal d1">
       <svg viewBox="0 0 24 24"><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /><path d="M17 4a2 2 0 0 0 2 2a2 2 0 0 0 -2 2a2 2 0 0 0 -2 -2a2 2 0 0 0 2 -2" /><path d="M19 11h2m-1 -1v2" /></svg>
       <span class="eyebrow">Nota especial</span>
@@ -920,77 +988,99 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
 
 <!-- ═══════════ HOSPEDAJE ═══════════ -->
 <section id="lodging">
-  <div class="wrap reveal">
+  <div class="wrap lodging-top reveal">
     <div class="guide-block">
       <svg class="guide-icon" viewBox="0 0 24 24"><path d="M3 7v11m0 -4h18m0 4v-8a2 2 0 0 0 -2 -2h-8v6" /><path d="M7 10m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
       <h3 class="guide-cat">Hospedaje</h3>
       <p class="guide-note">Menciona el código de descuento al llamar para obtener la tarifa especial de la boda.</p>
-      <div class="gift-grid hotel-grid">
-        <div class="gift-card hotel-card reveal">
-          <img class="hotel-photo" src="assets/hoteles/hotsson.jpg" alt="HS HOTSSON Tampico" loading="lazy">
-          <h3>HS Hotsson</h3>
-          <p class="code-label">Código de descuento</p>
-          <p class="code-line">
-            <span class="code-value">BODYYH</span>
-            <button class="copy-btn copy-plain" data-copy="BODYYH" aria-label="Copiar el código BODYYH">
-              <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
-              <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
-            </button>
-          </p>
-          <div class="hotel-actions">
-            <div class="hotel-btns">
-              <a class="btn hotel-call" href="tel:+524777198010">
-                <svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
-                Llamar
-              </a>
-              <a class="btn ghost" href="https://maps.app.goo.gl/mMGJWUhMeMAdo2kv8" target="_blank" rel="noopener">Ver mapa</a>
-            </div>
-          </div>
-        </div>
-        <div class="gift-card hotel-card reveal d1">
-          <img class="hotel-photo" src="assets/hoteles/hampton.jpg" alt="Hampton Inn by Hilton Tampico Zona Dorada" loading="lazy">
-          <h3>Hampton Inn Zona Dorada</h3>
-          <p class="code-label">Código de descuento</p>
-          <p class="code-line">
-            <span class="code-value">YUSIN Y HENRY</span>
-            <button class="copy-btn copy-plain" data-copy="YUSIN Y HENRY" aria-label="Copiar el código YUSIN Y HENRY">
-              <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
-              <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
-            </button>
-          </p>
-          <div class="hotel-actions">
-            <span class="hotel-note">Pide la extensión de Reservas</span>
-            <div class="hotel-btns">
-              <a class="btn hotel-call" href="tel:+528332413500">
-                <svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
-                Llamar
-              </a>
-              <a class="btn ghost" href="https://maps.app.goo.gl/QSYR24vPhWbkzLo7A" target="_blank" rel="noopener">Ver mapa</a>
-            </div>
-          </div>
-        </div>
-        <div class="gift-card hotel-card reveal d2">
-          <img class="hotel-photo" src="assets/hoteles/city-express.jpg" alt="City Express Plus by Marriott Tampico" loading="lazy">
-          <h3>City Express Plus</h3>
-          <p class="code-label">Código de descuento</p>
-          <p class="code-line">
-            <span class="code-value">BODA YUSIN Y HENRY</span>
-            <button class="copy-btn copy-plain" data-copy="BODA YUSIN Y HENRY" aria-label="Copiar el código BODA YUSIN Y HENRY">
-              <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
-              <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
-            </button>
-          </p>
-          <div class="hotel-actions">
-            <span class="hotel-note">Marca la opción 2 · Recepción</span>
-            <div class="hotel-btns">
-              <a class="btn hotel-call" href="tel:+528334780340">
-                <svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
-                Llamar
-              </a>
-              <a class="btn ghost" href="https://maps.app.goo.gl/Casvgv2auvKDiBa58?g_st=ic" target="_blank" rel="noopener">Ver mapa</a>
-            </div>
-          </div>
-        </div>
+    </div>
+  </div>
+
+  <!-- HS Hotsson -->
+  <div class="lodging-hero">
+    <img src="assets/hoteles/hotsson.jpg" alt="HS HOTSSON Tampico" loading="lazy">
+    <svg class="events-wave" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-fill" d="M0,130 L0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52 L1440,130 Z"/>
+      <path class="wave-line" d="M0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52"/>
+    </svg>
+  </div>
+  <div class="wrap lodging-content reveal">
+    <h3>HS Hotsson</h3>
+    <p class="code-label">Código de descuento</p>
+    <p class="code-line">
+      <span class="code-value">BODYYH</span>
+      <button class="copy-btn copy-plain" data-copy="BODYYH" aria-label="Copiar el código BODYYH">
+        <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+        <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
+      </button>
+    </p>
+    <div class="hotel-actions">
+      <div class="hotel-btns">
+        <a class="btn hotel-call" href="tel:+524777198010">
+          <svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
+          Llamar
+        </a>
+        <a class="btn ghost" href="https://maps.app.goo.gl/mMGJWUhMeMAdo2kv8" target="_blank" rel="noopener">Ver mapa</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hampton Inn Zona Dorada -->
+  <div class="lodging-hero">
+    <img src="assets/hoteles/hampton.jpg" alt="Hampton Inn by Hilton Tampico Zona Dorada" loading="lazy">
+    <svg class="events-wave" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-fill" d="M0,130 L0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52 L1440,130 Z"/>
+      <path class="wave-line" d="M0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52"/>
+    </svg>
+  </div>
+  <div class="wrap lodging-content reveal">
+    <h3>Hampton Inn Zona Dorada</h3>
+    <p class="code-label">Código de descuento</p>
+    <p class="code-line">
+      <span class="code-value">YUSIN Y HENRY</span>
+      <button class="copy-btn copy-plain" data-copy="YUSIN Y HENRY" aria-label="Copiar el código YUSIN Y HENRY">
+        <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+        <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
+      </button>
+    </p>
+    <div class="hotel-actions">
+      <span class="hotel-note">Pide la extensión de Reservas</span>
+      <div class="hotel-btns">
+        <a class="btn hotel-call" href="tel:+528332413500">
+          <svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
+          Llamar
+        </a>
+        <a class="btn ghost" href="https://maps.app.goo.gl/QSYR24vPhWbkzLo7A" target="_blank" rel="noopener">Ver mapa</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- City Express Plus -->
+  <div class="lodging-hero">
+    <img src="assets/hoteles/city-express.jpg" alt="City Express Plus by Marriott Tampico" loading="lazy">
+    <svg class="events-wave" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-fill" d="M0,130 L0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52 L1440,130 Z"/>
+      <path class="wave-line" d="M0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52"/>
+    </svg>
+  </div>
+  <div class="wrap lodging-content reveal">
+    <h3>City Express Plus</h3>
+    <p class="code-label">Código de descuento</p>
+    <p class="code-line">
+      <span class="code-value">BODA YUSIN Y HENRY</span>
+      <button class="copy-btn copy-plain" data-copy="BODA YUSIN Y HENRY" aria-label="Copiar el código BODA YUSIN Y HENRY">
+        <svg class="ico ico-copy" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
+        <svg class="ico ico-check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5l10 -10" /></svg>
+      </button>
+    </p>
+    <div class="hotel-actions">
+      <span class="hotel-note">Marca la opción 2 · Recepción</span>
+      <div class="hotel-btns">
+        <a class="btn hotel-call" href="tel:+528334780340">
+          <svg class="bi" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2" /></svg>
+          Llamar
+        </a>
+        <a class="btn ghost" href="https://maps.app.goo.gl/Casvgv2auvKDiBa58?g_st=ic" target="_blank" rel="noopener">Ver mapa</a>
       </div>
     </div>
   </div>
@@ -1105,15 +1195,23 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
 
 <script>
 // ═══ Música ═══
-const music    = document.getElementById('bg-music');
-const musicBtn = document.getElementById('music-btn');
+const music     = document.getElementById('bg-music');
+const musicBtn  = document.getElementById('music-btn');
+const musicPlayer = document.getElementById('music-player');
 let hasMusic = music.querySelector('source').getAttribute('src') && !music.querySelector('source').getAttribute('src').includes('{{');
-if(hasMusic){ music.volume = .55; musicBtn.classList.add('show'); }
+if(hasMusic){ music.volume = .55; musicPlayer.classList.add('show'); }
 
 musicBtn.addEventListener('click', ()=>{
-  if(music.paused){ music.play(); musicBtn.classList.add('playing'); }
-  else{ music.pause(); musicBtn.classList.remove('playing'); }
+  if(music.paused){
+    music.play(); musicPlayer.classList.add('playing');
+    musicBtn.setAttribute('aria-label','Pausar nuestra canción');
+  }else{
+    music.pause(); musicPlayer.classList.remove('playing');
+    musicBtn.setAttribute('aria-label','Reproducir nuestra canción');
+  }
 });
+// si la canción termina (por si se quita el loop) el estado vuelve a "play"
+music.addEventListener('ended', ()=>{ musicPlayer.classList.remove('playing'); musicBtn.setAttribute('aria-label','Reproducir nuestra canción'); });
 
 // ═══ Botón flotante de confirmar asistencia ═══
 // Aparece cuando el botón del hero sale del viewport; se oculta al llegar al RSVP
@@ -1162,6 +1260,7 @@ setTimeout(()=>{ document.querySelectorAll('.reveal:not(.in)').forEach(el=>el.cl
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const banner = document.getElementById('banner');
   const img = document.getElementById('banner-img');
+  if(!banner || !img) return; // el banner puede estar oculto
   let ticking = false;
   window.addEventListener('scroll', ()=>{
     if(ticking) return; ticking = true;
