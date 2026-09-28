@@ -406,25 +406,21 @@ section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 
 /* ══════════ EVENTOS ══════════ */
 /* Ceremonia & Recepción: imagen a todo lo ancho con corte ondulado, sin cajas */
-#events{background:var(--ivory);padding:0}
-#events .wrap{padding:var(--s5) var(--s3) var(--s12)}
-.events-hero{position:relative;width:100%;height:clamp(260px,44vw,440px);overflow:hidden}
+#events{background:var(--ivory);padding:0 0 var(--s12)}
+#events>.wrap{padding-left:var(--s3);padding-right:var(--s3)}
+#events>.wrap.events-top{padding-top:var(--s12)}
+.events-hero{position:relative;width:100%;height:clamp(260px,44vw,440px);overflow:hidden;margin-top:var(--s8)}
 .events-hero>img{width:100%;height:100%;object-fit:cover;object-position:center 42%;display:block}
+/* filtro cálido para la foto de la iglesia (día, cielo azul → tono más cálido) */
+.events-hero>img.warm{filter:sepia(.32) saturate(1.5) brightness(1.03)}
 /* la onda: relleno del color de la sección subiendo sobre la imagen + línea dorada */
 .events-wave{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:clamp(46px,7vw,84px);display:block}
-/* el relleno de la onda va un pelín más oscuro que --ivory (#F5F0EB) para igualar
-   el tono del fondo CON textura de tela (que oscurece ~7 por canal); si se deja
-   en ivory puro, la franja lisa se ve más clara ("blanca") sobre el textil */
+/* el relleno va un pelín más oscuro que --ivory para igualar el fondo con textura */
 .wave-fill{fill:#EEE9E4}
 .wave-line{fill:none;stroke:var(--champagne);stroke-width:1.5;vector-effect:non-scaling-stroke}
-/* los dos eventos como texto centrado, con una línea divisoria sutil (sin caja) */
-.event-flow{display:grid;grid-template-columns:1fr;gap:var(--s6);margin-top:var(--s5);max-width:760px;margin-left:auto;margin-right:auto}
-.event-sep{display:none}
-@media(min-width:680px){
-  .event-flow{grid-template-columns:1fr 1px 1fr;align-items:center}
-  .event-sep{display:block;align-self:stretch;width:1px;margin:var(--s3) 0;
-    background:linear-gradient(to bottom,transparent,rgba(214,196,163,.9),transparent)}
-}
+/* cada evento (iglesia / salón): contenido centrado bajo su imagen, sin caja */
+.events-content{max-width:460px;margin-left:auto;margin-right:auto;padding-top:0}
+@media(min-width:680px){.events-content{margin-top:calc(-1 * var(--s2))}}
 .event-item{display:flex;flex-direction:column;align-items:center;text-align:center}
 .event-icon{width:52px;height:52px;margin:0 auto var(--s2);stroke:var(--mocha);fill:none;stroke-width:.8;stroke-linecap:round;stroke-linejoin:round}
 .event-item h3{
@@ -865,34 +861,46 @@ footer .hearts{margin-top:var(--s1);color:var(--champagne);letter-spacing:.5em;f
 
 <!-- ═══════════ EVENTOS ═══════════ -->
 <section id="events">
+  <div class="wrap events-top reveal">
+    <div class="eyebrow">¿Cuándo y dónde?</div>
+    <h2>Ceremonia <em>&amp;</em> Recepción</h2>
+  </div>
+
+  <!-- Ceremonia · Iglesia -->
   <div class="events-hero">
-    <img src="assets/iglesia.jpg" alt="Iglesia San Pedro y San Pablo" style="object-position:center 38%">
+    <img class="warm" src="assets/iglesia.jpg" alt="Iglesia San Pedro y San Pablo" style="object-position:center 38%">
     <svg class="events-wave" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
       <path class="wave-fill" d="M0,130 L0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52 L1440,130 Z"/>
       <path class="wave-line" d="M0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52"/>
     </svg>
   </div>
-  <div class="wrap reveal">
-    <div class="eyebrow">¿Cuándo y dónde?</div>
-    <h2>Ceremonia <em>&amp;</em> Recepción</h2>
-    <div class="event-flow">
-      <div class="event-item">
-        <svg class="event-icon" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M10 21v-4a2 2 0 0 1 4 0v4"/><path d="M10 5h4"/><path d="M12 3v5"/><path d="M6 21v-7m-2 2l8-8 8 8m-2-2v7"/></svg>
-        <h3>Ceremonia religiosa</h3>
-        <div class="time">8:30 <small>pm</small></div>
-        <p class="place">Iglesia San Pedro<br>y San Pablo</p>
-        <div class="place-city">Tampico, Tamps.</div>
-        <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Iglesia+San+Pedro+y+San+Pablo+Tampico+Tamaulipas" target="_blank" rel="noopener"><svg class="bi" viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg> ¿Cómo llegar?</a>
-      </div>
-      <div class="event-sep" aria-hidden="true"></div>
-      <div class="event-item">
-        <svg class="event-icon" viewBox="0 0 24 24"><path d="M9 21h6" /><path d="M12 16v5" /><path d="M12 5m-4 0a4 2 0 1 0 8 0a4 2 0 1 0 -8 0" /><path d="M8 5c0 6.075 1.79 11 4 11s4 -4.925 4 -11" /></svg>
-        <h3>Recepción</h3>
-        <div class="time">9:30 <small>pm</small></div>
-        <p class="place">Salón<br>Deportivo Español</p>
-        <div class="place-city">Tampico, Tamps.</div>
-        <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Club+Deportivo+Espa%C3%B1ol+Tampico+Tamaulipas" target="_blank" rel="noopener"><svg class="bi" viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg> ¿Cómo llegar?</a>
-      </div>
+  <div class="wrap events-content reveal">
+    <div class="event-item">
+      <svg class="event-icon" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M10 21v-4a2 2 0 0 1 4 0v4"/><path d="M10 5h4"/><path d="M12 3v5"/><path d="M6 21v-7m-2 2l8-8 8 8m-2-2v7"/></svg>
+      <h3>Ceremonia religiosa</h3>
+      <div class="time">8:30 <small>pm</small></div>
+      <p class="place">Iglesia San Pedro y San Pablo</p>
+      <div class="place-city">Tampico, Tamps.</div>
+      <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Iglesia+San+Pedro+y+San+Pablo+Tampico+Tamaulipas" target="_blank" rel="noopener"><svg class="bi" viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg> ¿Cómo llegar?</a>
+    </div>
+  </div>
+
+  <!-- Recepción · Salón -->
+  <div class="events-hero">
+    <img src="assets/salon.jpg" alt="Salón Deportivo Español" style="object-position:center 45%">
+    <svg class="events-wave" viewBox="0 0 1440 130" preserveAspectRatio="none" aria-hidden="true">
+      <path class="wave-fill" d="M0,130 L0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52 L1440,130 Z"/>
+      <path class="wave-line" d="M0,72 C 320,24 560,24 760,64 C 940,100 1160,104 1440,52"/>
+    </svg>
+  </div>
+  <div class="wrap events-content reveal">
+    <div class="event-item">
+      <svg class="event-icon" viewBox="0 0 24 24"><path d="M9 21h6" /><path d="M12 16v5" /><path d="M12 5m-4 0a4 2 0 1 0 8 0a4 2 0 1 0 -8 0" /><path d="M8 5c0 6.075 1.79 11 4 11s4 -4.925 4 -11" /></svg>
+      <h3>Recepción</h3>
+      <div class="time">9:30 <small>pm</small></div>
+      <p class="place">Salón Deportivo Español</p>
+      <div class="place-city">Tampico, Tamps.</div>
+      <a class="btn ghost" href="https://www.google.com/maps/search/?api=1&query=Club+Deportivo+Espa%C3%B1ol+Tampico+Tamaulipas" target="_blank" rel="noopener"><svg class="bi" viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z" /></svg> ¿Cómo llegar?</a>
     </div>
   </div>
 </section>
