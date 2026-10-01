@@ -159,6 +159,11 @@ section,footer{position:relative;z-index:1}
 /* ══════════ SECCIONES ══════════ */
 section{padding:var(--s12) var(--s3);text-align:center;position:relative}
 .wrap{max-width:700px;margin:0 auto}
+/* encabezados de estas secciones en columna más angosta para que en desktop
+   el texto no se vea estirado (el .wrap base de 700 queda muy abierto aquí).
+   Eventos un poco más ancho para que "Ceremonia & Recepción" (538px) no se parta. */
+#dresscode .dress-top,#guide-intro .wrap{max-width:560px}
+#events .events-top{max-width:600px}
 
 /* ══════════ HERO ══════════ */
 #hero{
