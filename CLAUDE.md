@@ -6,7 +6,7 @@ Sitio web de invitación de boda. Single-page, HTML/CSS/JS vanilla, sin framewor
 - **`index.html`** — archivo canónico del sitio (editar este). Incluye meta tags Open Graph con URLs absolutas al sitio publicado.
 - **`assets/`** — las 7 fotos (hero portrait/landscape, galería 1–4, banner), extraídas del base64 original.
 - **`invitacion-yusin-henry-v6.html`** — artefacto original de Cowork con fotos embebidas en base64; se conserva como respaldo histórico, NO editar.
-- **Publicado en GitHub Pages:** https://rodolfopenagos.github.io/yusinyhenry/ — repo `RodolfoPenagos/yusinyhenry` (público), rama `master`, raíz. Cada `git push` republica automáticamente (~30 s).
+- **Publicado en:** https://yusinhenry.com.mx (dominio propio en Hostinger, apex con `www` por CNAME → `rodolfopenagos.github.io`; archivo `CNAME` en la raíz del repo). Hospedado en GitHub Pages — repo `RodolfoPenagos/yusinyhenry` (público), rama `master`, raíz. Cada `git push` republica automáticamente (~30 s).
 - La vista previa de WhatsApp usa `og:image` → `assets/banner.jpg`; si se renombra o cambia esa foto, actualizar los meta tags.
 
 ## Datos del evento (NO modificar sin confirmación)
@@ -67,7 +67,7 @@ Tokens: `--fs-caption:12 --fs-small:16 --fs-body:20 --fs-lead:24` + h2 `clamp(32
 - [ ] Texto real de "Nuestra historia" (el actual es placeholder escrito por Claude)
 - [ ] MP3 de la canción de la pareja para el botón de música
 - [ ] Posible reintroducción del sobre animado (nivel de calidad premium, en Claude Design)
-- [x] Deploy — hecho en GitHub Pages: https://rodolfopenagos.github.io/yusinyhenry/ (pendiente opcional: dominio propio o URL corta)
+- [x] Deploy — GitHub Pages con dominio propio: https://yusinhenry.com.mx
 - [ ] Considerar icono de vestido (Phosphor, MIT) si el hanger de Tabler no convence para "Damas"
 
 ## Comandos
